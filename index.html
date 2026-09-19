@@ -8,10 +8,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
     
-    <!-- โหลด React แบบ Global (วิธีนี้แก้จอขาวได้ 100%) -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- ตั้งค่า Import Map (ระบบแก้จอขาว) -->
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@18.2.0",
+        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+        "lucide-react": "https://esm.sh/lucide-react@0.294.0?external=react"
+      }
+    }
+    </script>
     
     <!-- โหลดตัวแปลภาษา React (Babel) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -26,108 +32,33 @@
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
     <div id="root"></div>
 
-    <script type="text/babel">
-        // เรียกใช้ฟังก์ชันจาก Global React
-        const { useState, useEffect, useCallback, useRef } = React;
-        const { createRoot } = ReactDOM;
-
-        // ดึงไอคอนจาก lucide
-        const IconWrapper = ({ name, size = 24, className = '' }) => {
-            const iconRef = useRef(null);
-            useEffect(() => {
-                if (iconRef.current && lucide.icons[name]) {
-                    iconRef.current.innerHTML = '';
-                    const iconElement = document.createElement('i');
-                    iconRef.current.appendChild(iconElement);
-                    lucide.createIcons({ icons: { [name]: lucide.icons[name] }, nameAttr: 'data-lucide', attrs: { width: size, height: size, class: className } });
-                    iconElement.setAttribute('data-lucide', name);
-                }
-            }, [name, size, className]);
-            return <span ref={iconRef} className={className} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}></span>;
-        };
-
-        // สร้าง Components ไอคอนให้เหมือนเดิม
-        const LayoutDashboard = (props) => <IconWrapper name="LayoutDashboard" {...props} />;
-        const FolderOpen = (props) => <IconWrapper name="FolderOpen" {...props} />;
-        const PlusSquare = (props) => <IconWrapper name="PlusSquare" {...props} />;
-        const LayoutTemplate = (props) => <IconWrapper name="LayoutTemplate" {...props} />;
-        const Users = (props) => <IconWrapper name="Users" {...props} />;
-        const ImageIcon = (props) => <IconWrapper name="Image" {...props} />;
-        const GitMerge = (props) => <IconWrapper name="GitMerge" {...props} />;
-        const Cpu = (props) => <IconWrapper name="Cpu" {...props} />;
-        const Download = (props) => <IconWrapper name="Download" {...props} />;
-        const Settings = (props) => <IconWrapper name="Settings" {...props} />;
-        const Moon = (props) => <IconWrapper name="Moon" {...props} />;
-        const Sun = (props) => <IconWrapper name="Sun" {...props} />;
-        const Bell = (props) => <IconWrapper name="Bell" {...props} />;
-        const Search = (props) => <IconWrapper name="Search" {...props} />;
-        const ChevronRight = (props) => <IconWrapper name="ChevronRight" {...props} />;
-        const FileText = (props) => <IconWrapper name="FileText" {...props} />;
-        const Settings2 = (props) => <IconWrapper name="Settings2" {...props} />;
-        const ImagePlus = (props) => <IconWrapper name="ImagePlus" {...props} />;
-        const UserPlus = (props) => <IconWrapper name="UserPlus" {...props} />;
-        const CheckCircle2 = (props) => <IconWrapper name="CheckCircle2" {...props} />;
-        const Clock = (props) => <IconWrapper name="Clock" {...props} />;
-        const AlertCircle = (props) => <IconWrapper name="AlertCircle" {...props} />;
-        const Type = (props) => <IconWrapper name="Type" {...props} />;
-        const AlignLeft = (props) => <IconWrapper name="AlignLeft" {...props} />;
-        const Bold = (props) => <IconWrapper name="Bold" {...props} />;
-        const Italic = (props) => <IconWrapper name="Italic" {...props} />;
-        const Heading1 = (props) => <IconWrapper name="Heading1" {...props} />;
-        const Quote = (props) => <IconWrapper name="Quote" {...props} />;
-        const Table = (props) => <IconWrapper name="Table" {...props} />;
-        const PlayCircle = (props) => <IconWrapper name="PlayCircle" {...props} />;
-        const Save = (props) => <IconWrapper name="Save" {...props} />;
-        const BookOpen = (props) => <IconWrapper name="BookOpen" {...props} />;
-        const Eye = (props) => <IconWrapper name="Eye" {...props} />;
-        const AlignCenter = (props) => <IconWrapper name="AlignCenter" {...props} />;
-        const AlignRight = (props) => <IconWrapper name="AlignRight" {...props} />;
-        const List = (props) => <IconWrapper name="List" {...props} />;
-        const Minus = (props) => <IconWrapper name="Minus" {...props} />;
-        const Globe = (props) => <IconWrapper name="Globe" {...props} />;
-        const ChevronDown = (props) => <IconWrapper name="ChevronDown" {...props} />;
-        const Key = (props) => <IconWrapper name="Key" {...props} />;
-        const Check = (props) => <IconWrapper name="Check" {...props} />;
-        const X = (props) => <IconWrapper name="X" {...props} />;
-        const RefreshCw = (props) => <IconWrapper name="RefreshCw" {...props} />;
-        const ShieldCheck = (props) => <IconWrapper name="ShieldCheck" {...props} />;
-        const PenTool = (props) => <IconWrapper name="PenTool" {...props} />;
-        const Edit3 = (props) => <IconWrapper name="Edit3" {...props} />;
-        const CheckSquare = (props) => <IconWrapper name="CheckSquare" {...props} />;
-        const ListOrdered = (props) => <IconWrapper name="ListOrdered" {...props} />;
-        const Play = (props) => <IconWrapper name="Play" {...props} />;
-        const Pause = (props) => <IconWrapper name="Pause" {...props} />;
-        const Activity = (props) => <IconWrapper name="Activity" {...props} />;
-        const FileWarning = (props) => <IconWrapper name="FileWarning" {...props} />;
-        const Zap = (props) => <IconWrapper name="Zap" {...props} />;
-        const Wand2 = (props) => <IconWrapper name="Wand2" {...props} />;
-
-// ------------------- เริ่มโค้ดหลักของแอปพลิเคชัน (เหมือนเดิมเป๊ะ) -------------------
+    <script type="text/babel" data-type="module">
+        import React, { useState, useEffect, useCallback, useRef } from 'react';
+        import { createRoot } from 'react-dom/client';
+        import { 
+          LayoutDashboard, FolderOpen, PlusSquare, LayoutTemplate, 
+          Users, Image as ImageIcon, GitMerge, Cpu, Download, Settings,
+          Moon, Sun, Bell, Search, ChevronRight, FileText, 
+          Settings2, ImagePlus, UserPlus, CheckCircle2,
+          Clock, AlertCircle, Type, AlignLeft, Bold, Italic, 
+          Heading1, Quote, Table, PlayCircle, Save, BookOpen, Eye,
+          AlignCenter, AlignRight, List, Minus, Globe, ChevronDown, Key,
+          Check, X, RefreshCw, ShieldCheck, PenTool, Edit3, CheckSquare, 
+          ListOrdered, Play, Pause, Activity, FileWarning, Zap, Wand2
+        } from 'lucide-react';
 
 const AIEventLogger = {
   log: (event, data = {}) => {
     const safeData = { ...data };
     if (safeData.apiKey) safeData.apiKey = '[REDACTED]';
     if (safeData.Authorization) safeData.Authorization = '[REDACTED]';
-    if (safeData.prompt && safeData.prompt.length > 50) safeData.prompt = safeData.prompt.substring(0, 50) + '...';
-    if (safeData.content && safeData.content.length > 50) safeData.content = safeData.content.substring(0, 50) + '...';
-    if (safeData.systemInstruction && safeData.systemInstruction.length > 50) safeData.systemInstruction = safeData.systemInstruction.substring(0, 50) + '...';
-    
     console.log(`[AI_EVENT] ${event}`, safeData);
   },
   warn: (event, data = {}) => {
-    const safeData = { ...data };
-    if (safeData.apiKey) safeData.apiKey = '[REDACTED]';
-    if (safeData.Authorization) safeData.Authorization = '[REDACTED]';
-    console.warn(`[AI_WARN] ${event}`, safeData);
+    console.warn(`[AI_WARN] ${event}`);
   },
   error: (event, error, metadata = {}) => {
-    console.error(`[AI_ERROR] ${event} - ${error?.message || 'Unknown error'}`, {
-       code: error?.code,
-       provider: error?.providerId,
-       retryable: error?.retryable,
-       ...metadata
-    });
+    console.error(`[AI_ERROR] ${event} - ${error?.message || 'Unknown error'}`);
   }
 };
 
@@ -145,17 +76,13 @@ const AppModels = {
     createdAt: data.createdAt || new Date().toISOString(),
     updatedAt: data.updatedAt || new Date().toISOString(),
     projectBrief: data.projectBrief || null,
-    
     bookOutline: data.bookOutline || null,
     chapterPlans: data.chapterPlans || {}, 
     chapterDrafts: data.chapterDrafts || {}, 
-    writingTasks: data.writingTasks || {}, 
-    
-    characters: (data.characters && !Array.isArray(data.characters)) ? data.characters : {}, 
+    characters: data.characters || {}, 
     imageAssets: data.imageAssets || {},
     chapterLayouts: data.chapterLayouts || {},
     exportHistory: data.exportHistory || [],
-    places: data.places || [],
     qaReport: data.qaReport || null
   }),
 
@@ -166,45 +93,24 @@ const AppModels = {
     model: data.model || 'Auto',
     priority: data.priority || 'Disabled',
     enabled: data.enabled !== undefined ? data.enabled : false,
-    costMode: data.costMode || 'Free',
     status: data.status || 'NOT_CONFIGURED', 
     capabilities: data.capabilities || [], 
-    createdAt: data.createdAt || new Date().toISOString(),
-    updatedAt: data.updatedAt || new Date().toISOString(),
   }),
 
   AIRequest: (data) => ({
     requestId: data.requestId || `req_${Date.now()}`,
     projectId: data.projectId || null,
     taskType: data.taskType || 'GENERATE_TEXT',
-    providerId: data.providerId || null, 
     model: data.model || 'Auto',
     systemInstruction: data.systemInstruction || '',
     userPrompt: data.userPrompt || '',
-    context: data.context || {},
     temperature: data.temperature !== undefined ? data.temperature : 0.7,
     maxTokens: data.maxTokens || 2048,
-    metadata: data.metadata || {},
-    createdAt: new Date().toISOString()
   }),
 
   AIResponse: (data) => ({
-    requestId: data.requestId || null,
-    providerId: data.providerId || null,
-    model: data.model || null,
     content: data.content || null,
-    finishReason: data.finishReason || 'UNKNOWN', 
-    usage: {
-      inputTokens: data.usage?.inputTokens !== undefined ? data.usage.inputTokens : null, 
-      outputTokens: data.usage?.outputTokens !== undefined ? data.usage.outputTokens : null,
-      totalTokens: data.usage?.totalTokens !== undefined ? data.usage.totalTokens : null,
-      source: data.usage?.source || 'unavailable' 
-    },
-    latencyMs: data.latencyMs || 0,
     status: data.status || 'PENDING',
-    error: data.error || null,
-    metadata: data.metadata || {},
-    createdAt: new Date().toISOString()
   }),
 
   ProjectBriefField: (value, source = 'AI_INFERRED', status = 'NEEDS_VERIFICATION') => ({
@@ -214,251 +120,108 @@ const AppModels = {
   }),
 
   ProjectBrief: (data = {}) => {
-    const f = (val) => val && typeof val === 'object' && 'value' in val && 'source' in val ? val : AppModels.ProjectBriefField(val || (Array.isArray(val) ? [] : ''));
-    
+    const f = (val) => val && typeof val === 'object' && 'value' in val ? val : AppModels.ProjectBriefField(val || (Array.isArray(val) ? [] : ''));
     return {
-      schemaVersion: 1,
-      generatedAt: data.generatedAt || new Date().toISOString(),
-      updatedAt: data.updatedAt || new Date().toISOString(),
-      confidence: data.confidence || 0.8,
-      targetAudience: f(data.targetAudience),
-      ageRange: f(data.ageRange),
-      readingLevel: f(data.readingLevel),
-      audienceDescription: f(data.audienceDescription),
-      purpose: f(data.purpose),
-      themes: f(data.themes || []),
-      coreTopics: f(data.coreTopics || []),
-      keywords: f(data.keywords || []),
-      centralMessage: f(data.centralMessage),
-      tone: f(data.tone),
-      voice: f(data.voice),
-      writingStyle: f(data.writingStyle),
-      narrativeStyle: f(data.narrativeStyle),
-      pointOfView: f(data.pointOfView),
-      proposedStructure: f(data.proposedStructure || []),
-      estimatedChapterCount: f(data.estimatedChapterCount || 0),
-      chapterPlan: f(data.chapterPlan || []),
-      writingRules: f(data.writingRules || []),
-      prohibitedContent: f(data.prohibitedContent || []),
-      requiredElements: f(data.requiredElements || []),
-      visualStyle: f(data.visualStyle),
-      visualMood: f(data.visualMood),
-      colorDirection: f(data.colorDirection),
-      imageRequirements: f(data.imageRequirements || []),
-      format: f(data.format),
-      intendedUse: f(data.intendedUse),
-      qualityLevel: f(data.qualityLevel),
-      assumptions: f(data.assumptions || []),
-      ambiguities: f(data.ambiguities || []),
-      questionsForUser: f(data.questionsForUser || [])
+      targetAudience: f(data.targetAudience), purpose: f(data.purpose), themes: f(data.themes || []),
+      coreTopics: f(data.coreTopics || []), centralMessage: f(data.centralMessage), tone: f(data.tone),
+      writingStyle: f(data.writingStyle), proposedStructure: f(data.proposedStructure || []),
+      writingRules: f(data.writingRules || []), visualStyle: f(data.visualStyle), colorDirection: f(data.colorDirection),
     };
   },
 
   BookOutline: (data = {}) => ({
-    schemaVersion: 1,
-    projectId: data.projectId || null,
-    title: data.title || '',
-    centralMessage: data.centralMessage || '',
-    structureType: data.structureType || '',
-    chapters: data.chapters || [],
-    writingRules: data.writingRules || [],
-    source: data.source || 'AI_GENERATED',
-    status: data.status || 'NEEDS_VERIFICATION',
-    generatedAt: data.generatedAt || new Date().toISOString(),
-    updatedAt: data.updatedAt || new Date().toISOString()
+    title: data.title || '', centralMessage: data.centralMessage || '', chapters: data.chapters || []
   }),
 
   ChapterPlan: (data = {}) => ({
-    schemaVersion: 1,
-    projectId: data.projectId || null,
-    chapterId: data.chapterId || null,
-    chapterPurpose: data.chapterPurpose || '',
-    keyPoints: data.keyPoints || [],
-    sequence: data.sequence || [],
-    requiredElements: data.requiredElements || [],
-    exclusions: data.exclusions || [],
-    targetWordCount: data.targetWordCount || 0,
-    tone: data.tone || '',
-    styleRequirements: data.styleRequirements || '',
-    source: data.source || 'AI_GENERATED',
-    status: data.status || 'NEEDS_VERIFICATION',
-    generatedAt: data.generatedAt || new Date().toISOString(),
-    updatedAt: data.updatedAt || new Date().toISOString()
+    sequence: data.sequence || [], tone: data.tone || ''
   }),
 
   ChapterDraft: (data = {}) => ({
-    schemaVersion: 1,
-    projectId: data.projectId || null,
-    chapterId: data.chapterId || null,
-    title: data.title || '',
-    content: data.content || '',
-    wordCount: data.wordCount || 0,
-    language: data.language || 'ไทย',
-    source: data.source || 'AI_GENERATED',
-    status: data.status || 'NEEDS_REVIEW', 
-    generationMetadata: data.generationMetadata || {},
-    createdAt: data.createdAt || new Date().toISOString(),
-    updatedAt: data.updatedAt || new Date().toISOString()
+    content: data.content || '', wordCount: data.wordCount || 0
   }),
 
   CharacterProfile: (data = {}) => ({
     characterId: data.characterId || `char_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-    projectId: data.projectId || null,
-    name: data.name || '',
-    role: data.role || 'Supporting',
-    physicalDescription: data.physicalDescription || '',
-    personality: data.personality || '',
-    visualPrompt: data.visualPrompt || '',
-    imageUrl: data.imageUrl || null,
-    status: data.status || 'AI_GENERATED',
-    createdAt: data.createdAt || new Date().toISOString(),
-    updatedAt: data.updatedAt || new Date().toISOString()
+    name: data.name || '', role: data.role || 'Supporting', physicalDescription: data.physicalDescription || '',
+    personality: data.personality || '', visualPrompt: data.visualPrompt || '', imageUrl: data.imageUrl || null, status: data.status || 'AI_GENERATED'
   }),
 
   ImageAsset: (data = {}) => ({
     assetId: data.assetId || `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-    projectId: data.projectId || null,
-    chapterId: data.chapterId || null,
-    type: data.type || 'Chapter Illustration',
-    imagePrompt: data.imagePrompt || '',
-    status: data.status || 'PROMPT_GENERATED', // PROMPT_GENERATED -> GENERATING -> COMPLETED
-    url: data.url || null,
-    createdAt: data.createdAt || new Date().toISOString(),
-    updatedAt: data.updatedAt || new Date().toISOString()
+    chapterId: data.chapterId || null, type: data.type || 'Chapter Illustration', imagePrompt: data.imagePrompt || '',
+    status: data.status || 'PROMPT_GENERATED', url: data.url || null
   }),
 
   LayoutSchema: (data = {}) => ({
-    layoutId: data.layoutId || `layout_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-    projectId: data.projectId || null,
-    chapterId: data.chapterId || null,
-    margins: data.margins || { top: '1in', bottom: '1in', left: '1in', right: '1in' },
-    elements: Array.isArray(data.elements) ? data.elements : [],
-    status: data.status || 'PENDING',
-    createdAt: data.createdAt || new Date().toISOString(),
-    updatedAt: data.updatedAt || new Date().toISOString()
+    elements: Array.isArray(data.elements) ? data.elements : []
   }),
 
   ExportJob: (data = {}) => ({
-    jobId: data.jobId || `exp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-    projectId: data.projectId || null,
-    format: data.format || 'PDF',
-    status: data.status || 'PENDING',
-    paperSize: data.paperSize || 'A4',
-    downloadUrl: data.downloadUrl || null,
-    createdAt: data.createdAt || new Date().toISOString(),
-    completedAt: data.completedAt || null
+    jobId: data.jobId || `exp_${Date.now()}`, format: data.format || 'PDF', paperSize: data.paperSize || 'A4',
+    downloadUrl: data.downloadUrl || null, completedAt: data.completedAt || null, status: data.status || 'PENDING'
   }),
 
   QAReport: (data = {}) => ({
-      reportId: data.reportId || `qa_${Date.now()}`,
-      projectId: data.projectId || null,
-      score: data.score || 0,
-      status: data.status || 'PENDING', // PENDING, PASSED, WARNINGS, CRITICAL
-      issues: Array.isArray(data.issues) ? data.issues : [],
-      generatedAt: data.generatedAt || new Date().toISOString()
+      score: data.score || 0, status: data.status || 'PENDING', issues: Array.isArray(data.issues) ? data.issues : []
   })
 };
 
 const StorageService = {
   _get: (key, defaultValue) => {
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : defaultValue;
-    } catch (e) {
-      console.error(`StorageService Error reading ${key}:`, e);
-      return defaultValue;
-    }
+    try { const item = window.localStorage.getItem(key); return item ? JSON.parse(item) : defaultValue; } 
+    catch (e) { return defaultValue; }
   },
   _set: (key, value) => {
-    try {
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {
-      console.error(`StorageService Error writing ${key}:`, e);
-    }
+    try { window.localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
   },
-  getProjects: () => {
-     const rawProjects = StorageService._get('aipub_v3_projects', []);
-     return rawProjects.map(p => AppModels.Project(p));
-  },
+  getProjects: () => StorageService._get('aipub_v4_projects', []).map(p => AppModels.Project(p)),
   saveProject: (project) => {
     const projects = StorageService.getProjects();
     const existingIndex = projects.findIndex(p => p.id === project.id);
     const updatedProject = { ...project, updatedAt: new Date().toISOString() };
     if (existingIndex >= 0) projects[existingIndex] = updatedProject;
     else projects.unshift(updatedProject);
-    StorageService._set('aipub_v3_projects', projects);
+    StorageService._set('aipub_v4_projects', projects);
     return updatedProject;
   },
-  getSettings: () => StorageService._get('aipub_v3_settings', { uiLang: 'th', isDarkMode: false, advancedMode: false }),
-  saveSettings: (settings) => StorageService._set('aipub_v3_settings', settings)
+  getSettings: () => StorageService._get('aipub_v4_settings', { uiLang: 'th', isDarkMode: false, advancedMode: false }),
+  saveSettings: (settings) => StorageService._set('aipub_v4_settings', settings)
 };
-
-const MigrationService = {
-  run: () => {
-    const v3Exists = window.localStorage.getItem('aipub_v3_projects');
-    if (v3Exists) return;
-    const legacyData = StorageService._get('aipub_v2_projects', null);
-    if (legacyData && Array.isArray(legacyData) && legacyData.length > 0) {
-      const migrated = legacyData.map(oldProj => AppModels.Project(oldProj));
-      StorageService._set('aipub_v3_projects', migrated);
-      AIEventLogger.log("MigrationService", { message: `Successfully migrated ${migrated.length} projects to V3/V4.` });
-    } else {
-      StorageService._set('aipub_v3_projects', []);
-    }
-  }
-};
-MigrationService.run();
 
 class BrowserDevelopmentCredentialAdapter {
   constructor() { this._inMemoryStore = new Map(); }
-  async saveCredential(providerId, apiKey) { if (!apiKey) return false; this._inMemoryStore.set(providerId, apiKey); return true; }
+  async saveCredential(providerId, apiKey) { this._inMemoryStore.set(providerId, apiKey); return true; }
   async getCredential(providerId) { return this._inMemoryStore.get(providerId) || null; }
-  async deleteCredential(providerId) { this._inMemoryStore.delete(providerId); return true; }
-  async hasCredential(providerId) { return this._inMemoryStore.has(providerId); }
 }
 const CredentialStore = new BrowserDevelopmentCredentialAdapter();
-
-const ProviderCredentialResolver = {
-    async resolve(providerId) { return await CredentialStore.getCredential(providerId); }
-}
+const ProviderCredentialResolver = { async resolve(providerId) { return await CredentialStore.getCredential(providerId); } }
 
 const ProviderRegistry = {
-  _providers: StorageService._get('aipub_v3_providers', []),
+  _providers: StorageService._get('aipub_v4_providers', []),
   listProviders: () => ProviderRegistry._providers,
   registerProvider: (providerData) => {
     const newConfig = AppModels.ProviderConfig(providerData);
     const updated = [...ProviderRegistry._providers, newConfig];
     ProviderRegistry._providers = updated;
-    StorageService._set('aipub_v3_providers', updated);
+    StorageService._set('aipub_v4_providers', updated);
     return newConfig;
   },
   updateProvider: (id, updates) => {
-     const updated = ProviderRegistry._providers.map(p => p.id === id ? { ...p, ...updates, updatedAt: new Date().toISOString() } : p);
+     const updated = ProviderRegistry._providers.map(p => p.id === id ? { ...p, ...updates } : p);
      ProviderRegistry._providers = updated;
-     StorageService._set('aipub_v3_providers', updated);
-  },
-  deleteProvider: (id) => {
-    const updated = ProviderRegistry._providers.filter(p => p.id !== id);
-    ProviderRegistry._providers = updated;
-    StorageService._set('aipub_v3_providers', updated);
+     StorageService._set('aipub_v4_providers', updated);
   }
 };
 
 const ExportEngine = {
     _generateHTML: (project, exportOptions) => {
-        const pageSizes = {
-           'A4': '210mm 297mm',
-           'A5': '148mm 210mm',
-           'US Letter': '8.5in 11in'
-        };
+        const pageSizes = { 'A4': '210mm 297mm', 'A5': '148mm 210mm', 'US Letter': '8.5in 11in' };
         const size = pageSizes[exportOptions.paperSize] || '210mm 297mm';
         
         let contentHTML = `
         <!DOCTYPE html>
-        <html>
-        <head>
-        <meta charset="utf-8">
-        <title>${project.title || 'Untitled'}</title>
+        <html><head><meta charset="utf-8"><title>${project.title || 'Untitled'}</title>
         <style>
             @page { size: ${size}; margin: 25mm; }
             body { font-family: "Georgia", "Sarabun", serif; line-height: 1.8; color: #111; max-width: 800px; margin: 0 auto; padding: 20px; background: white; }
@@ -467,236 +230,102 @@ const ExportEngine = {
             h2 { font-size: 1.8em; margin-top: 2em; margin-bottom: 1em; color: #333; }
             p { text-indent: 2.5em; margin-bottom: 1.2em; text-align: justify; font-size: 12pt; }
             .cover { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 90vh; text-align: center; }
-            .cover-title { font-size: 4em; font-weight: bold; margin-bottom: 0.5em; line-height: 1.2; text-transform: uppercase; }
+            .cover-title { font-size: 4em; font-weight: bold; margin-bottom: 0.5em; text-transform: uppercase; }
             .cover-type { font-size: 1.5em; color: #666; text-transform: uppercase; letter-spacing: 3px; border-top: 2px solid #333; padding-top: 10px; }
             .toc-list { list-style: none; padding: 0; margin-top: 2em; }
             .toc-list li { margin-bottom: 15px; font-size: 1.2em; border-bottom: 1px dotted #ccc; display: flex; justify-content: space-between; }
             .illustration { text-align: center; margin: 3em 0; page-break-inside: avoid; }
             .illustration img { max-width: 100%; width: 800px; aspect-ratio: 4/3; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: block; margin: 0 auto; }
-            @media print {
-                body { padding: 0; margin: 0; max-width: none; }
-                .cover { height: 100vh; }
-                .no-print { display: none; }
-            }
-        </style>
-        </head>
-        <body>
+            @media print { body { padding: 0; margin: 0; max-width: none; } .cover { height: 100vh; } }
+        </style></head><body>
             <div class="cover page-break">
                 <div class="cover-title">${project.title || 'Untitled Book'}</div>
                 <div class="cover-type">${project.bookType}</div>
                 <div style="margin-top:60px; font-style:italic; color: #555;">Generated via AI Publishing Studio</div>
-                <div style="margin-top:20px; font-size: 0.9em; color: #777;">Language: ${project.language} | Style: ${project.style}</div>
-            </div>
-        `;
+            </div>`;
 
-        if (project.bookOutline && project.bookOutline.chapters && project.bookOutline.chapters.length > 0) {
+        if (project.bookOutline && project.bookOutline.chapters) {
             contentHTML += `<div class="page-break"><h1 style="page-break-before: auto;">Table of Contents</h1><ul class="toc-list">`;
-            project.bookOutline.chapters.forEach(ch => {
-                contentHTML += `<li><span>Chapter ${ch.order}: ${ch.title}</span></li>`;
-            });
+            project.bookOutline.chapters.forEach(ch => { contentHTML += `<li><span>Chapter ${ch.order}: ${ch.title}</span></li>`; });
             contentHTML += `</ul></div>`;
 
             project.bookOutline.chapters.forEach(ch => {
                 const draft = (project.chapterDrafts || {})[ch.chapterId];
                 const layout = (project.chapterLayouts || {})[ch.chapterId];
-                
                 contentHTML += `<div class="chapter page-break">`;
                 
                 if (layout && layout.elements && layout.elements.length > 0) {
                      layout.elements.forEach(el => {
-                         if (el.type === 'heading') {
-                             contentHTML += `<h2>${el.contentRef}</h2>`;
-                         } else if (el.type === 'image') {
+                         if (el.type === 'heading') { contentHTML += `<h2>${el.contentRef}</h2>`; } 
+                         else if (el.type === 'image') {
                              const asset = project.imageAssets[el.contentRef];
-                             if (asset && asset.url) {
-                                 contentHTML += `<div class="illustration"><img src="${asset.url}" alt="Illustration" /></div>`;
-                             } else {
-                                 contentHTML += `<div class="illustration"><div style="padding: 60px; border: 2px dashed #ccc; background:#fafafa; color:#888;">[Illustration Placeholder: ${el.contentRef}]</div></div>`;
-                             }
-                         } else {
-                             contentHTML += `<p>${el.contentRef}</p>`;
-                         }
+                             if (asset && asset.url) { contentHTML += `<div class="illustration"><img src="${asset.url}" alt="Illustration" /></div>`; } 
+                         } else { contentHTML += `<p>${el.contentRef}</p>`; }
                      });
                 } else if (draft) {
                      contentHTML += `<h1>${ch.title}</h1>`;
-                     const paragraphs = draft.content.split('\n\n');
-                     paragraphs.forEach(p => {
-                         if(p.trim()) contentHTML += `<p>${p.trim().replace(/\n/g, '<br/>')}</p>`;
-                     });
-                } else {
-                     contentHTML += `<h1>${ch.title}</h1>`;
-                     contentHTML += `<p style="text-align:center; color:#888; font-style:italic; margin-top: 4em;">[Content pending generation]</p>`;
+                     draft.content.split('\n\n').forEach(p => { if(p.trim()) contentHTML += `<p>${p.trim().replace(/\n/g, '<br/>')}</p>`; });
                 }
                 contentHTML += `</div>`;
             });
-        } else {
-            contentHTML += `<div style="height: 50vh; display: flex; align-items: center; justify-content: center;"><p style="text-align:center; color: #666;">No manuscript content available.</p></div>`;
         }
-
         contentHTML += `</body></html>`;
         return contentHTML;
     },
 
     async compileBook(project, exportOptions) {
-        AIEventLogger.log("ExportEngine", { message: "Starting compilation...", projectId: project.id, options: exportOptions });
-        
-        return new Promise((resolve, reject) => {
-            try {
-                const htmlContent = this._generateHTML(project, exportOptions);
-                let downloadUrl = null;
-
-                if (exportOptions.format === 'PDF') {
-                    const iframe = document.createElement('iframe');
-                    iframe.style.position = 'fixed';
-                    iframe.style.right = '0';
-                    iframe.style.bottom = '0';
-                    iframe.style.width = '0';
-                    iframe.style.height = '0';
-                    iframe.style.border = '0';
-                    document.body.appendChild(iframe);
-                    
-                    iframe.contentDocument.open();
-                    iframe.contentDocument.write(htmlContent);
-                    iframe.contentDocument.close();
-                    
-                    iframe.onload = () => {
-                        try {
-                            iframe.contentWindow.focus();
-                            iframe.contentWindow.print();
-                        } catch(e) { 
-                            console.error("Print dialog failed", e); 
-                        }
-                        setTimeout(() => { document.body.removeChild(iframe); }, 2000);
-                        
-                        const job = AppModels.ExportJob({
-                            projectId: project.id,
-                            format: exportOptions.format,
-                            paperSize: exportOptions.paperSize,
-                            status: 'SUCCESS',
-                            downloadUrl: 'print_trigger_only', 
-                            completedAt: new Date().toISOString()
-                        });
-                        resolve(job);
-                    };
-                } else {
-                    const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-                    downloadUrl = URL.createObjectURL(blob);
-                    
-                    const a = document.createElement('a');
-                    a.href = downloadUrl;
-                    a.download = `${project.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_export.html`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-
-                    const job = AppModels.ExportJob({
-                        projectId: project.id,
-                        format: 'HTML (EPUB Ready)',
-                        paperSize: exportOptions.paperSize,
-                        status: 'SUCCESS',
-                        downloadUrl: downloadUrl,
-                        completedAt: new Date().toISOString()
-                    });
-                    resolve(job);
-                }
-            } catch (error) {
-                reject(new Error("Compilation Engine Error: " + error.message));
+        return new Promise((resolve) => {
+            const htmlContent = this._generateHTML(project, exportOptions);
+            if (exportOptions.format === 'PDF') {
+                const iframe = document.createElement('iframe');
+                iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+                document.body.appendChild(iframe);
+                iframe.contentDocument.open(); iframe.contentDocument.write(htmlContent); iframe.contentDocument.close();
+                iframe.onload = () => {
+                    iframe.contentWindow.focus(); iframe.contentWindow.print();
+                    setTimeout(() => { document.body.removeChild(iframe); }, 2000);
+                    resolve(AppModels.ExportJob({ projectId: project.id, format: exportOptions.format, paperSize: exportOptions.paperSize, status: 'SUCCESS', downloadUrl: 'print_trigger_only', completedAt: new Date().toISOString() }));
+                };
+            } else {
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+                const downloadUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = downloadUrl; a.download = `${project.title.toLowerCase()}_export.html`;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                resolve(AppModels.ExportJob({ projectId: project.id, format: 'HTML', paperSize: exportOptions.paperSize, status: 'SUCCESS', downloadUrl, completedAt: new Date().toISOString() }));
             }
         });
     }
 };
 
-const LayoutEngine = {
-  LAYOUT_PROMPT_VERSION: "1.0.0",
-  _extractJSON: (content) => {
-    try {
-      const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-      const jsonStr = match ? match[1].trim() : content.trim();
-      return JSON.parse(jsonStr);
-    } catch (e) { throw new AIError("INVALID_AI_OUTPUT", "Failed to parse JSON. " + e.message, null, false); }
-  },
-  _validateLayout: (data) => {
-    if (!data || typeof data !== 'object') throw new AIError("INVALID_AI_OUTPUT", "Expected an object.", null, false);
-    if (!Array.isArray(data.elements)) throw new AIError("INVALID_AI_OUTPUT", "Expected elements array.", null, false);
-    return {
-      margins: data.margins || { top: '1in', bottom: '1in', left: '1in', right: '1in' },
-      elements: data.elements.map(e => ({ type: e.type || 'paragraph', contentRef: e.contentRef || '', style: e.style || 'normal' }))
-    };
-  },
-  async generateChapterLayout(project, chapterId, chapterDraft, chapterImages) {
-    AIEventLogger.log("LayoutEngine", { message: "Starting Layout Generation...", chapterId });
-    if (!chapterDraft || !chapterDraft.content) throw new AIError("INVALID_REQUEST", "Chapter draft required.", null, false);
-
-    const systemInstruction = `You are the Lead Typesetter for AI Publishing Studio. Based on the chapter text and available images, generate a sequential layout schema detailing how text blocks and images interleave.
-Return ONLY valid JSON:
-{
-  "margins": {"top": "String", "bottom": "String", "left": "String", "right": "String"},
-  "elements": [ { "type": "heading" | "paragraph" | "image", "contentRef": "text snippet or image assetId", "style": "String" } ]
-}`;
-    const imagesContext = Object.values(chapterImages || {}).filter(img => img.chapterId === chapterId).map(img => `[Image Asset ID: ${img.assetId}] - Prompt: ${img.imagePrompt}`).join('\n');
-    let userPrompt = `STYLE: ${project.style}\nCHAPTER TEXT:\n${(chapterDraft.content || '').substring(0, 3000)}\n\nIMAGES:\n${imagesContext || 'None'}\n\nGenerate sequence breaking text into logical blocks and inserting image references.`;
-
-    const request = AppModels.AIRequest({ projectId: project.id, taskType: 'LAYOUT_GENERATION', systemInstruction, userPrompt, temperature: 0.3, maxTokens: 3000 });
-    try {
-      const response = await AIService.generateText(request);
-      if (response.status !== 'SUCCESS' || !response.content) throw new AIError("INVALID_AI_OUTPUT", "Generation failed", response.providerId, false);
-      const rawJsonData = this._extractJSON(response.content);
-      return AppModels.LayoutSchema({ ...this._validateLayout(rawJsonData), projectId: project.id, chapterId: chapterId, status: 'GENERATED' });
-    } catch (error) { AIEventLogger.error("LayoutEngine Generate Failed", error); throw error; }
-  }
-};
-
 const ImageEngine = {
-  CHARACTER_BIBLE_PROMPT_VERSION: "1.0.0",
-  ILLUSTRATION_PROMPT_VERSION: "1.0.0",
-
   _extractJSON: (content) => {
-    try {
-      const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-      return JSON.parse(match ? match[1].trim() : content.trim());
-    } catch (e) { throw new AIError("INVALID_AI_OUTPUT", "Failed to parse JSON. " + e.message, null, false); }
-  },
-
-  _validateCharacterBible: (data) => {
-    if (!Array.isArray(data)) throw new AIError("INVALID_AI_OUTPUT", "Expected array of characters.", null, false);
-    return data.map(c => ({ name: c.name || 'Unknown', role: c.role || 'Supporting', physicalDescription: c.physicalDescription || '', personality: c.personality || '', visualPrompt: c.visualPrompt || '' }));
-  },
-
-  _validateIllustrationPrompts: (data) => {
-    if (!Array.isArray(data)) throw new AIError("INVALID_AI_OUTPUT", "Expected array of image prompts.", null, false);
-    return data.map(img => ({ type: img.type || 'Chapter Illustration', imagePrompt: img.imagePrompt || '' }));
+    try { const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i); return JSON.parse(match ? match[1].trim() : content.trim()); } 
+    catch (e) { throw new Error("JSON Parse failed"); }
   },
 
   async generateCharacterBible(project) {
-    if (!project.projectBrief) throw new AIError("INVALID_REQUEST", "Project DNA required.", null, false);
-    const systemInstruction = `You are the Lead Art Director. Generate a diverse cast of characters based on Project DNA. Return ONLY valid JSON:
-[ { "name": "String", "role": "String", "physicalDescription": "String", "personality": "String", "visualPrompt": "Detailed prompt for AI image generator" } ]`;
-    let userPrompt = `DNA Audience: ${project.projectBrief.targetAudience?.value}\nThemes: ${(project.projectBrief.themes?.value||[]).join(', ')}\nStyle: ${project.projectBrief.visualStyle?.value}\n`;
-    if (project.bookOutline?.chapters) userPrompt += `OUTLINE: ${project.bookOutline.chapters.map(c=>c.title).join(', ')}`;
-    const request = AppModels.AIRequest({ projectId: project.id, taskType: 'CHARACTER_BIBLE_GENERATION', systemInstruction, userPrompt, temperature: 0.7, maxTokens: 3000 });
+    const systemInstruction = `Generate a diverse cast of characters. Return ONLY JSON:\n[ { "name": "String", "role": "String", "physicalDescription": "String", "personality": "String", "visualPrompt": "Detailed visual description" } ]`;
+    const userPrompt = `Themes: ${(project.projectBrief?.themes?.value||[]).join(', ')}\nStyle: ${project.projectBrief?.visualStyle?.value}`;
+    const request = AppModels.AIRequest({ projectId: project.id, taskType: 'CHARACTER_BIBLE', systemInstruction, userPrompt });
     const response = await AIService.generateText(request);
-    const validatedData = this._validateCharacterBible(this._extractJSON(response.content));
+    const validatedData = this._extractJSON(response.content);
     const charactersDict = {};
-    validatedData.forEach(c => { const char = AppModels.CharacterProfile({ ...c, projectId: project.id, status: 'AI_GENERATED' }); charactersDict[char.characterId] = char; });
+    validatedData.forEach(c => { const char = AppModels.CharacterProfile({ ...c, projectId: project.id }); charactersDict[char.characterId] = char; });
     return charactersDict;
   },
 
   async generateIllustrationPrompts(project, chapterId, chapterDraft) {
-    if (!project.projectBrief) throw new AIError("INVALID_REQUEST", "Project DNA required.", null, false);
-    const systemInstruction = `You are the Lead Art Director. Generate detailed image prompts for chapter illustrations. Return ONLY valid JSON:
-[ { "type": "String", "imagePrompt": "Detailed visual description including lighting, style, subject" } ]`;
-    let userPrompt = `DNA STYLE: ${project.projectBrief.visualStyle?.value || 'Standard'}\nCHAPTER CONTENT:\n${(chapterDraft?.content || '').substring(0, 2000)}\nGenerate illustration prompts.`;
-    const request = AppModels.AIRequest({ projectId: project.id, taskType: 'IMAGE_PROMPT_GENERATION', systemInstruction, userPrompt, temperature: 0.7, maxTokens: 2000 });
+    const systemInstruction = `Generate detailed image prompts for chapter illustrations. Return ONLY JSON:\n[ { "type": "String", "imagePrompt": "Detailed visual description" } ]`;
+    const userPrompt = `STYLE: ${project.projectBrief?.visualStyle?.value || 'Standard'}\nCONTENT:\n${(chapterDraft?.content || '').substring(0, 1000)}`;
+    const request = AppModels.AIRequest({ projectId: project.id, taskType: 'IMAGE_PROMPTS', systemInstruction, userPrompt });
     const response = await AIService.generateText(request);
-    const validatedData = this._validateIllustrationPrompts(this._extractJSON(response.content));
+    const validatedData = this._extractJSON(response.content);
     const assetsDict = {};
-    validatedData.forEach(img => { const asset = AppModels.ImageAsset({ ...img, projectId: project.id, chapterId: chapterId, status: 'PROMPT_GENERATED' }); assetsDict[asset.assetId] = asset; });
+    validatedData.forEach(img => { const asset = AppModels.ImageAsset({ ...img, projectId: project.id, chapterId }); assetsDict[asset.assetId] = asset; });
     return assetsDict;
   },
 
   async generateAssetImage(project, asset) {
-    AIEventLogger.log("ImageEngine", { message: "Generating real active image via Pollinations...", assetId: asset.assetId });
-
     try {
         const basePrompt = asset.imagePrompt || asset.visualPrompt || "A beautiful scene";
         const styleContext = project.projectBrief?.visualStyle?.value || project.style || "Standard Book Illustration";
@@ -704,329 +333,166 @@ const ImageEngine = {
 
         // Combine prompt with project visual DNA for consistency
         const fullPrompt = `${basePrompt}, Style: ${styleContext}${colorContext}, highly detailed, professional illustration`;
-
-        // Generate cache-busting seed
         const seed = new Date().getTime() % 100000;
         const encodedPrompt = encodeURIComponent(fullPrompt);
         
-        // Use free, direct URL from Pollinations.ai (no key required, returns image stream)
+        // Connect to Free Real Image API (Pollinations.ai)
         const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=800&height=600&nologo=true&seed=${seed}`;
+        await new Promise(resolve => setTimeout(resolve, 1500)); // UX delay
 
-        // Artificial delay for UX
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        return {
-            ...asset,
-            url: imageUrl,
-            status: 'COMPLETED',
-            updatedAt: new Date().toISOString()
-        };
-    } catch (error) {
-        AIEventLogger.error("ImageEngine Generate Failed", error);
-        throw error;
-    }
+        return { ...asset, url: imageUrl, status: 'COMPLETED' };
+    } catch (error) { throw error; }
   }
 };
 
 const WritingEngine = {
-  WRITING_OUTLINE_PROMPT_VERSION: "1.0.0", CHAPTER_PLAN_PROMPT_VERSION: "1.0.0", CHAPTER_DRAFT_PROMPT_VERSION: "1.0.0",
-
   _extractJSON: (content) => {
-    try {
-      const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-      return JSON.parse(match ? match[1].trim() : content.trim());
-    } catch (e) { throw new AIError("INVALID_AI_OUTPUT", "Failed to parse JSON. " + e.message, null, false); }
-  },
-  _getApprovedBriefContext: (projectBrief) => {
-      if (!projectBrief) return "No project brief available.";
-      const safeExtract = (key) => projectBrief[key]?.value || null;
-      return `Audience: ${safeExtract('targetAudience')}\nPurpose: ${safeExtract('purpose')}\nCentral Message: ${safeExtract('centralMessage')}\nTone: ${safeExtract('tone')}\nStyle: ${safeExtract('writingStyle')}\nThemes: ${(safeExtract('themes') || []).join(', ')}\nRules: ${(safeExtract('writingRules') || []).join(', ')}`.trim();
+    try { const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i); return JSON.parse(match ? match[1].trim() : content.trim()); } 
+    catch (e) { throw new Error("JSON Parse failed"); }
   },
 
   async generateOutline(project) {
-    const systemInstruction = `You are the Structural Architect. Generate a Book Outline based on Project DNA. Return ONLY valid JSON:
-{ "title": "String", "centralMessage": "String", "structureType": "String", "writingRules": ["String"], "chapters": [ { "chapterId": "string", "order": 1, "title": "String", "purpose": "String", "summary": "String", "keyPoints": ["String"], "estimatedWordCount": 2000, "requiredElements": ["String"] } ] }`;
-    const userPrompt = `Title: "${project.title}"\nType: ${project.bookType}\nLanguage: ${project.language}\nDNA:\n${this._getApprovedBriefContext(project.projectBrief)}`;
-    const request = AppModels.AIRequest({ projectId: project.id, taskType: 'OUTLINE_GENERATION', systemInstruction, userPrompt, temperature: 0.4, maxTokens: 4096 });
-    const response = await AIService.generateText(request);
+    const systemInstruction = `Generate a Book Outline. Return ONLY JSON:\n{ "title": "String", "centralMessage": "String", "chapters": [ { "chapterId": "string", "order": 1, "title": "String", "summary": "String", "estimatedWordCount": 2000 } ] }`;
+    const userPrompt = `Title: "${project.title}"\nType: ${project.bookType}`;
+    const response = await AIService.generateText(AppModels.AIRequest({ projectId: project.id, systemInstruction, userPrompt }));
     const data = this._extractJSON(response.content);
-    return AppModels.BookOutline({ projectId: project.id, ...data, chapters: data.chapters.map(c => ({...c, chapterId: c.chapterId || `ch_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`, status: 'PLANNED'})), source: 'AI_GENERATED', status: 'NEEDS_VERIFICATION' });
+    return AppModels.BookOutline({ projectId: project.id, ...data, chapters: data.chapters.map(c => ({...c, chapterId: c.chapterId || `ch_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`})) });
   },
   
   async generateChapterPlan(project, chapterId) {
-      const chapterMeta = project.bookOutline.chapters.find(c => c.chapterId === chapterId);
-      const systemInstruction = `You are the Chapter Planner. Generate a detailed Chapter Plan. Return ONLY valid JSON:
-{ "chapterPurpose": "String", "keyPoints": ["String"], "sequence": ["String"], "requiredElements": ["String"], "exclusions": ["String"], "targetWordCount": 2000, "tone": "String", "styleRequirements": "String" }`;
-      const userPrompt = `DNA:\n${this._getApprovedBriefContext(project.projectBrief)}\nCHAPTER:\nTitle: ${chapterMeta.title}\nSummary: ${chapterMeta.summary}`;
-      const request = AppModels.AIRequest({ projectId: project.id, taskType: 'CHAPTER_PLAN', systemInstruction, userPrompt, temperature: 0.3, maxTokens: 2048 });
-      const response = await AIService.generateText(request);
-      return AppModels.ChapterPlan({ projectId: project.id, chapterId: chapterId, ...this._extractJSON(response.content), source: 'AI_GENERATED', status: 'NEEDS_VERIFICATION' });
+      const systemInstruction = `Generate a Chapter Plan. Return ONLY JSON:\n{ "sequence": ["String"], "tone": "String" }`;
+      const response = await AIService.generateText(AppModels.AIRequest({ projectId: project.id, systemInstruction, userPrompt: "Plan this chapter" }));
+      return AppModels.ChapterPlan({ projectId: project.id, chapterId: chapterId, ...this._extractJSON(response.content) });
   },
 
   async generateChapterDraft(project, chapterId, chapterPlan) {
-      const systemInstruction = `You are the Lead Writer. Write the full chapter prose based on the Chapter Plan. Return ONLY valid JSON:
-{ "title": "String", "content": "String (Markdown/Text)", "wordCount": 0 }`;
-      const userPrompt = `DNA:\n${this._getApprovedBriefContext(project.projectBrief)}\nPLAN:\nSequence: ${chapterPlan.sequence.join(' -> ')}\nTone: ${chapterPlan.tone}`;
-      const request = AppModels.AIRequest({ projectId: project.id, taskType: 'CHAPTER_DRAFT', systemInstruction, userPrompt, temperature: 0.6, maxTokens: 8192 });
-      const response = await AIService.generateText(request);
-      return AppModels.ChapterDraft({ projectId: project.id, chapterId: chapterId, ...this._extractJSON(response.content), language: project.language, source: 'AI_GENERATED', status: 'NEEDS_REVIEW' });
+      const systemInstruction = `Write full chapter prose based on plan. Return ONLY JSON:\n{ "content": "String (Markdown/Text)" }`;
+      const response = await AIService.generateText(AppModels.AIRequest({ projectId: project.id, systemInstruction, userPrompt: "Draft chapter" }));
+      return AppModels.ChapterDraft({ projectId: project.id, chapterId: chapterId, ...this._extractJSON(response.content) });
   },
   
   async reviseChapter(project, chapterDraft, instructions) {
-      AIEventLogger.log("WritingEngine", { message: "Executing Chapter Revision...", chapterId: chapterDraft.chapterId });
-      const systemInstruction = `You are a professional book editor. Revise the provided chapter text strictly according to the user's instructions. Maintain the original language: ${project.language}. Return ONLY valid JSON matching exactly:
-{ "revisedContent": "String (The fully revised chapter text formatted with standard paragraphs)" }`;
-      const userPrompt = `ORIGINAL TEXT:\n${chapterDraft.content}\n\nREVISION INSTRUCTIONS:\n${instructions}\n\nPlease provide the revised chapter text.`;
-      
-      const request = AppModels.AIRequest({
-          projectId: project.id, taskType: 'CHAPTER_REVISION', systemInstruction, userPrompt, temperature: 0.5, maxTokens: 8192
-      });
-      
-      const response = await AIService.generateText(request);
-      const rawJsonData = this._extractJSON(response.content);
-      if (!rawJsonData.revisedContent) throw new AIError("INVALID_AI_OUTPUT", "Missing revisedContent field.", null, false);
-      return rawJsonData.revisedContent;
+      const systemInstruction = `Revise text. Return ONLY JSON:\n{ "revisedContent": "String" }`;
+      const userPrompt = `ORIGINAL:\n${chapterDraft.content}\n\nINSTRUCTIONS:\n${instructions}`;
+      const response = await AIService.generateText(AppModels.AIRequest({ projectId: project.id, systemInstruction, userPrompt }));
+      return this._extractJSON(response.content).revisedContent;
+  }
+};
+
+const LayoutEngine = {
+  _extractJSON: (content) => {
+    try { const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i); return JSON.parse(match ? match[1].trim() : content.trim()); } 
+    catch (e) { throw new Error(); }
+  },
+  async generateChapterLayout(project, chapterId, chapterDraft, chapterImages) {
+    const systemInstruction = `Generate layout schema. Return ONLY JSON:\n{ "elements": [ { "type": "heading" | "paragraph" | "image", "contentRef": "text or assetId", "style": "String" } ] }`;
+    const imagesContext = Object.values(chapterImages || {}).filter(img => img.chapterId === chapterId).map(img => `[Asset ID: ${img.assetId}] - ${img.imagePrompt}`).join('\n');
+    const userPrompt = `TEXT:\n${(chapterDraft.content || '').substring(0, 1000)}\n\nIMAGES:\n${imagesContext || 'None'}`;
+    const response = await AIService.generateText(AppModels.AIRequest({ projectId: project.id, systemInstruction, userPrompt }));
+    return AppModels.LayoutSchema({ ...this._extractJSON(response.content), projectId: project.id, chapterId: chapterId });
   }
 };
 
 const QAEngine = {
     _extractJSON: (content) => {
-        try {
-          const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-          return JSON.parse(match ? match[1].trim() : content.trim());
-        } catch (e) { throw new AIError("INVALID_AI_OUTPUT", "Failed to parse JSON. " + e.message, null, false); }
+        try { const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i); return JSON.parse(match ? match[1].trim() : content.trim()); } 
+        catch (e) { throw new Error(); }
     },
-
     async auditManuscript(project) {
-        AIEventLogger.log("QAEngine", { message: "Starting Autonomous Manuscript Audit...", projectId: project.id });
-        if (!project.bookOutline || Object.keys(project.chapterDrafts).length === 0) {
-            throw new AIError("INVALID_REQUEST", "Requires Outline and at least one Draft to perform QA.", null, false);
-        }
-
-        const systemInstruction = `You are the Lead QA Editor for AI Publishing Studio. Your job is to audit the entire manuscript against the Project DNA and Outline.
-Look for tone inconsistencies, rule violations, continuity errors, and missing elements.
-Return ONLY valid JSON matching exactly:
-{
-  "score": Number (0-100),
-  "status": "String (PASSED, WARNINGS, CRITICAL)",
-  "issues": [
-    { "id": "string", "type": "warning" | "critical", "chapterId": "string (or 'global')", "description": "String", "suggestedFix": "String (Actionable prompt for revision)" }
-  ]
-}`;
-        let draftContext = "";
-        project.bookOutline.chapters.slice(0, 3).forEach(ch => { 
-            const draft = project.chapterDrafts[ch.chapterId];
-            if (draft) draftContext += `--- Chapter: ${ch.title} (ID: ${ch.chapterId}) ---\n${draft.content.substring(0, 1500)}...\n\n`;
-        });
-
-        const userPrompt = `PROJECT DNA:\nTone: ${project.projectBrief?.tone?.value}\nRules: ${(project.projectBrief?.writingRules?.value||[]).join(', ')}\n
-MANUSCRIPT SAMPLES:\n${draftContext}\n
-Perform the audit and generate the report JSON.`;
-
-        const request = AppModels.AIRequest({ projectId: project.id, taskType: 'QA_AUDIT', systemInstruction, userPrompt, temperature: 0.2, maxTokens: 3000 });
-        
-        try {
-            const response = await AIService.generateText(request);
-            const data = this._extractJSON(response.content);
-            return AppModels.QAReport({ projectId: project.id, ...data });
-        } catch (error) {
-            AIEventLogger.error("QAEngine Audit Failed", error);
-            throw error;
-        }
+        const systemInstruction = `Audit manuscript. Return ONLY JSON:\n{ "score": Number, "status": "PASSED|WARNINGS", "issues": [ { "type": "warning", "chapterId": "string", "description": "String", "suggestedFix": "String" } ] }`;
+        const response = await AIService.generateText(AppModels.AIRequest({ projectId: project.id, systemInstruction, userPrompt: "Audit this." }));
+        return AppModels.QAReport({ projectId: project.id, ...this._extractJSON(response.content) });
     }
 };
 
 const ProjectAnalyzer = {
-  BOOK_BRAIN_PROMPT_VERSION: "1.0.0",
   _extractJSON: (content) => {
-    try { const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i); return JSON.parse(match ? match[1].trim() : content.trim());
-    } catch (e) { throw new AIError("INVALID_AI_OUTPUT", "Failed to parse JSON.", null, false); }
+    try { const match = content.match(/```(?:json)?\s*([\s\S]*?)\s*```/i); return JSON.parse(match ? match[1].trim() : content.trim()); } 
+    catch (e) { throw new Error(); }
   },
-  _validateBrief: (data) => {
-    const ensureArray = (val) => Array.isArray(val) ? val : (val ? [val] : []);
-    const ensureString = (val) => (typeof val === 'string' ? val : '');
-    return {
-      targetAudience: data.targetAudience || '', ageRange: ensureString(data.ageRange), readingLevel: ensureString(data.readingLevel), audienceDescription: ensureString(data.audienceDescription),
-      purpose: data.purpose || '', themes: ensureArray(data.themes), coreTopics: ensureArray(data.coreTopics), keywords: ensureArray(data.keywords), centralMessage: ensureString(data.centralMessage),
-      tone: data.tone || '', voice: ensureString(data.voice), writingStyle: data.writingStyle || '', narrativeStyle: ensureString(data.narrativeStyle), pointOfView: ensureString(data.pointOfView),
-      proposedStructure: ensureArray(data.proposedStructure), estimatedChapterCount: data.estimatedChapterCount || 0, chapterPlan: ensureArray(data.chapterPlan),
-      writingRules: ensureArray(data.writingRules), prohibitedContent: ensureArray(data.prohibitedContent), requiredElements: ensureArray(data.requiredElements),
-      visualStyle: ensureString(data.visualStyle), visualMood: ensureString(data.visualMood), colorDirection: ensureString(data.colorDirection), imageRequirements: ensureArray(data.imageRequirements),
-      format: data.format || '', intendedUse: ensureString(data.intendedUse), qualityLevel: ensureString(data.qualityLevel),
-      assumptions: ensureArray(data.assumptions), ambiguities: ensureArray(data.ambiguities), questionsForUser: ensureArray(data.questionsForUser)
-    };
-  },
-  _mergeWithExisting: (existingBrief, newRawData) => {
-    const validatedData = ProjectAnalyzer._validateBrief(newRawData);
-    const merged = existingBrief ? { ...existingBrief, updatedAt: new Date().toISOString() } : AppModels.ProjectBrief();
-    for (const key of Object.keys(validatedData)) {
-        if (merged[key] && (merged[key].status === 'USER_APPROVED' || merged[key].source === 'USER_PROVIDED')) continue; 
-        merged[key] = AppModels.ProjectBriefField(validatedData[key], 'AI_INFERRED', 'NEEDS_VERIFICATION');
-    }
-    return merged;
-  },
-  async analyze(project, userInstructions = "") {
-    const systemInstruction = `You are Book Brain. ANALYZE the provided metadata and output a structured Project DNA in strict JSON format. DO NOT WRITE THE BOOK.
-Output MUST match: { "targetAudience": "", "purpose": "", "themes": [], "tone": "", "writingStyle": "", "proposedStructure": [], "writingRules": [], "visualStyle": "", "format": "", "assumptions": [], "ambiguities": [] }`;
-    const userPrompt = `Title: "${project.title}"\nType: ${project.bookType}\nLanguage: ${project.language}\nStyle: ${project.style}`;
-    const request = AppModels.AIRequest({ projectId: project.id, taskType: 'PROJECT_ANALYSIS', systemInstruction, userPrompt, temperature: 0.3, maxTokens: 4096 });
-    const response = await AIService.generateText(request);
-    return this._mergeWithExisting(project.projectBrief, this._extractJSON(response.content));
+  async analyze(project) {
+    const systemInstruction = `ANALYZE metadata and output Project DNA. Return ONLY JSON:\n{ "targetAudience": "", "purpose": "", "themes": [], "tone": "", "writingStyle": "", "proposedStructure": [], "visualStyle": "", "colorDirection": "" }`;
+    const response = await AIService.generateText(AppModels.AIRequest({ projectId: project.id, systemInstruction, userPrompt: `Title: "${project.title}"` }));
+    return AppModels.ProjectBrief(this._extractJSON(response.content));
   }
 };
 
-class AIError extends Error {
-  constructor(code, message, providerId = null, retryable = false, statusCode = null, metadata = {}) {
-    super(message); this.name = 'AIError'; this.code = code; this.providerId = providerId; this.retryable = retryable; this.statusCode = statusCode; this.metadata = metadata;
-  }
-}
-
-class BaseAIProvider {
+class GoogleGeminiProvider {
   constructor(config) { this.config = config; }
   getProviderId() { return this.config.id; }
-  getDisplayName() { return this.config.accountName; }
-  getCapabilities() { return this.config.capabilities || []; }
-  async healthCheck() { return { providerId: this.getProviderId(), status: 'UNKNOWN', latencyMs: 0, checkedAt: new Date().toISOString(), message: "Not implemented" }; }
-  async generate(request) { throw new AIError("PROVIDER_ERROR", "Not implemented", this.getProviderId(), false); }
+  async healthCheck() {
+    const apiKey = await ProviderCredentialResolver.resolve(this.getProviderId());
+    if (!apiKey) return { status: 'NOT_CONFIGURED' };
+    try {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+      return { status: response.ok ? 'CONNECTED' : 'ERROR' };
+    } catch (e) { return { status: 'NETWORK_ERROR' }; }
+  }
+  async generate(request) {
+    const apiKey = await ProviderCredentialResolver.resolve(this.getProviderId());
+    if (!apiKey) throw new Error("API Key missing.");
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${request.model}:generateContent?key=${apiKey}`;
+    const payload = { contents: [{ parts: [{ text: request.userPrompt }] }], generationConfig: { temperature: request.temperature } };
+    if (request.systemInstruction) payload.systemInstruction = { parts: [{ text: request.systemInstruction }] };
+    const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    return AppModels.AIResponse({ content: data.candidates?.[0]?.content?.parts?.[0]?.text || "", status: 'SUCCESS' });
+  }
 }
 
-class MockAIProvider extends BaseAIProvider {
-  getCapabilities() { return ['TEXT_GENERATION', 'STRUCTURED_OUTPUT', 'IMAGE_GENERATION']; }
-
-  async healthCheck() {
-    const start = performance.now();
-    const hasKey = await ProviderCredentialResolver.resolve(this.getProviderId());
-    const latencyMs = Math.round(performance.now() - start) + 15;
-    if (!hasKey) return { providerId: this.getProviderId(), status: 'AUTHENTICATION_ERROR', latencyMs, checkedAt: new Date().toISOString(), message: "Missing Mock Key." };
-    return { providerId: this.getProviderId(), status: 'DEVELOPMENT_MOCK', latencyMs, checkedAt: new Date().toISOString(), message: "Mock Provider ready." };
-  }
-
+class MockAIProvider {
+  constructor(config) { this.config = config; }
+  getProviderId() { return this.config.id; }
+  async healthCheck() { return { status: 'DEVELOPMENT_MOCK' }; }
   async generate(request) {
-    const hasKey = await ProviderCredentialResolver.resolve(this.getProviderId());
-    if (!hasKey) throw new AIError("AUTHENTICATION_ERROR", "Mock Key missing.", this.getProviderId(), false, 401);
-
     return new Promise((resolve) => {
       setTimeout(() => {
-        let content = `Mock Content`;
-        
+        let content = ``;
         if (request.taskType === 'PROJECT_ANALYSIS') {
-            content = `\`\`\`json\n{ "targetAudience": "General", "purpose": "Entertainment", "themes": ["Adventure"], "proposedStructure": ["Intro", "Body", "Conclusion"], "writingRules": ["Be engaging"], "visualStyle": "Cinematic", "format": "Ebook" }\n\`\`\``;
+            content = `\`\`\`json\n{ "targetAudience": "General", "purpose": "Entertainment", "themes": ["Adventure"], "visualStyle": "Cinematic" }\n\`\`\``;
         } else if (request.taskType === 'OUTLINE_GENERATION') {
-            content = `\`\`\`json\n{ "title": "Mock Book", "centralMessage": "Message", "structureType": "Linear", "writingRules": [], "chapters": [ { "chapterId": "c1", "order": 1, "title": "Ch 1", "purpose": "Intro", "summary": "Start", "keyPoints": [], "estimatedWordCount": 1000, "requiredElements": [] }, { "chapterId": "c2", "order": 2, "title": "Ch 2", "purpose": "Climax", "summary": "Action", "keyPoints": [], "estimatedWordCount": 1000, "requiredElements": [] } ] }\n\`\`\``;
+            content = `\`\`\`json\n{ "title": "Mock Book", "centralMessage": "Message", "chapters": [ { "chapterId": "c1", "order": 1, "title": "Ch 1" } ] }\n\`\`\``;
         } else if (request.taskType === 'CHAPTER_PLAN') {
-            content = `\`\`\`json\n{ "chapterPurpose": "Mock purpose", "keyPoints": ["P1"], "sequence": ["S1", "S2"], "requiredElements": [], "exclusions": [], "targetWordCount": 1000, "tone": "Neutral", "styleRequirements": "Clear" }\n\`\`\``;
+            content = `\`\`\`json\n{ "sequence": ["S1"], "tone": "Neutral" }\n\`\`\``;
         } else if (request.taskType === 'CHAPTER_DRAFT') {
-            content = `\`\`\`json\n{ "title": "Mock Ch", "content": "This is a mock draft. It flows well and covers the points. The quick brown fox jumps over the lazy dog.", "wordCount": 20 }\n\`\`\``;
+            content = `\`\`\`json\n{ "content": "This is a mock draft." }\n\`\`\``;
         } else if (request.taskType === 'CHAPTER_REVISION') {
-            content = `\`\`\`json\n{ "revisedContent": "This is the newly REVISED content. The agile amber fox leaps across the sleeping hound." }\n\`\`\``;
-        } else if (request.taskType === 'CHARACTER_BIBLE_GENERATION') {
-            content = `\`\`\`json\n[ { "name": "Hero", "role": "Protagonist", "physicalDescription": "Tall", "personality": "Brave", "visualPrompt": "A tall brave hero in cinematic lighting" } ]\n\`\`\``;
-        } else if (request.taskType === 'IMAGE_PROMPT_GENERATION') {
-            content = `\`\`\`json\n[ { "type": "Illustration", "imagePrompt": "A beautiful landscape at sunset, detailed matte painting" } ]\n\`\`\``;
+            content = `\`\`\`json\n{ "revisedContent": "Revised mock content." }\n\`\`\``;
+        } else if (request.taskType === 'CHARACTER_BIBLE') {
+            content = `\`\`\`json\n[ { "name": "Hero", "role": "Protagonist", "visualPrompt": "A tall brave hero" } ]\n\`\`\``;
+        } else if (request.taskType === 'IMAGE_PROMPTS') {
+            content = `\`\`\`json\n[ { "type": "Illustration", "imagePrompt": "A beautiful landscape" } ]\n\`\`\``;
         } else if (request.taskType === 'LAYOUT_GENERATION') {
-            content = `\`\`\`json\n{ "margins": {"top": "1in"}, "elements": [ { "type": "heading", "contentRef": "Title", "style": "h1" }, { "type": "paragraph", "contentRef": "Text block 1", "style": "p" }, { "type": "image", "contentRef": "mock_asset_1", "style": "img" } ] }\n\`\`\``;
+            content = `\`\`\`json\n{ "elements": [ { "type": "heading", "contentRef": "Title" }, { "type": "paragraph", "contentRef": "Text block 1" } ] }\n\`\`\``;
         } else if (request.taskType === 'QA_AUDIT') {
-            content = `\`\`\`json\n{ "score": 85, "status": "WARNINGS", "issues": [ { "id": "iss_1", "type": "warning", "chapterId": "c1", "description": "Tone slightly deviates from 'Professional' in paragraph 2.", "suggestedFix": "Make the phrasing more formal and less conversational." } ] }\n\`\`\``;
+            content = `\`\`\`json\n{ "score": 85, "status": "WARNINGS", "issues": [] }\n\`\`\``;
         }
-
-        resolve(AppModels.AIResponse({ requestId: request.requestId, providerId: this.getProviderId(), model: request.model, content, finishReason: 'STOP', usage: { inputTokens: 10, outputTokens: 100, totalTokens: 110, source: 'simulated' }, latencyMs: 200, status: 'SUCCESS' }));
-      }, 200);
+        resolve(AppModels.AIResponse({ content, status: 'SUCCESS' }));
+      }, 500);
     });
   }
 }
 
-class GoogleGeminiProvider extends BaseAIProvider {
-  getCapabilities() { return ['TEXT_GENERATION', 'STRUCTURED_OUTPUT']; } 
-  _getBaseUrl(model) { return `https://generativelanguage.googleapis.com/v1beta/models/${model}`; }
-  
-  async healthCheck() {
-    const start = performance.now();
-    const apiKey = await ProviderCredentialResolver.resolve(this.getProviderId());
-    if (!apiKey) return { providerId: this.getProviderId(), status: 'NOT_CONFIGURED', latencyMs: 0, checkedAt: new Date().toISOString(), message: "Missing API Key." };
-    try {
-      const controller = new AbortController(); const timeoutId = setTimeout(() => controller.abort(), 5000); 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`, { method: 'GET', signal: controller.signal });
-      clearTimeout(timeoutId);
-      const latencyMs = Math.round(performance.now() - start);
-      if (response.ok) return { providerId: this.getProviderId(), status: 'CONNECTED', latencyMs, checkedAt: new Date().toISOString(), message: "Connection successful." };
-      return { providerId: this.getProviderId(), status: 'ERROR', latencyMs, checkedAt: new Date().toISOString(), message: `Provider error (${response.status}).` };
-    } catch (error) {
-      if (error.name === 'AbortError') return { providerId: this.getProviderId(), status: 'TIMEOUT', latencyMs: 5000, checkedAt: new Date().toISOString(), message: "Request timed out." };
-      return { providerId: this.getProviderId(), status: 'NETWORK_ERROR', latencyMs: 0, checkedAt: new Date().toISOString(), message: error.message };
-    }
-  }
-
-  async generate(request) {
-    if (request.taskType === 'IMAGE_GENERATION') {
-        throw new AIError("UNSUPPORTED_TASK", "GoogleGeminiProvider (Text API) does not support image generation directly in this config. Fallback to Mock.", this.getProviderId(), false);
-    }
-    const start = performance.now();
-    const apiKey = await ProviderCredentialResolver.resolve(this.getProviderId());
-    if (!apiKey) throw new AIError("CREDENTIAL_MISSING", "API Key missing.", this.getProviderId(), false, 401);
-    
-    const url = `${this._getBaseUrl(request.model)}:generateContent?key=${apiKey}`;
-    const payload = { contents: [{ parts: [{ text: request.userPrompt }] }], generationConfig: { temperature: request.temperature, maxOutputTokens: request.maxTokens } };
-    if (request.systemInstruction) payload.systemInstruction = { parts: [{ text: request.systemInstruction }] };
-
-    try {
-      const controller = new AbortController(); const timeoutId = setTimeout(() => controller.abort(), 30000); 
-      const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: controller.signal });
-      clearTimeout(timeoutId);
-      if (!response.ok) throw new AIError("API_ERROR", `HTTP ${response.status}`, this.getProviderId(), false, response.status);
-      const data = await response.json();
-      const content = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-      return AppModels.AIResponse({ requestId: request.requestId, providerId: this.getProviderId(), model: request.model, content, finishReason: 'STOP', latencyMs: Math.round(performance.now() - start), status: 'SUCCESS' });
-    } catch (error) { throw new AIError("NETWORK_ERROR", error.message, this.getProviderId(), false); }
-  }
-}
-
-const ModelResolver = {
-  resolve: (providerType, requestedModel) => { if (requestedModel && requestedModel !== 'Auto') return requestedModel; return providerType === 'Google' ? 'gemini-1.5-flash' : 'Mock-Model'; }
-};
-
-class ProviderRouter {
-  static _getAdapter(config) { return config.providerType === 'Google' ? new GoogleGeminiProvider(config) : new MockAIProvider(config); }
-  static async _sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-  static async _executeWithRetry(adapter, request) {
-    let attempt = 1;
-    while (attempt <= 2) {
-      try { return await adapter.generate(request); }
-      catch (error) { if (error.retryable && attempt < 2) { await this._sleep(1000); attempt++; continue; } throw error; }
-    }
-  }
-  static async route(request) {
-    const eligible = ProviderRegistry.listProviders().filter(p => p.enabled && p.priority !== 'Disabled').sort((a, b) => (a.priority === 'Primary' ? 1 : 2) - (b.priority === 'Primary' ? 1 : 2));
-    if (eligible.length === 0) throw new AIError("NO_PROVIDER", "No enabled providers.", null, false);
-    let lastError = null;
-    for (const config of eligible) {
-      try {
-        const adapter = this._getAdapter(config);
-        if (request.taskType === 'IMAGE_GENERATION' && !adapter.getCapabilities().includes('IMAGE_GENERATION')) continue; 
-        return await this._executeWithRetry(adapter, { ...request, model: ModelResolver.resolve(config.providerType, request.model) });
-      } catch (error) { lastError = error; if (error.code === 'UNSUPPORTED_TASK') continue; if (!error.retryable) throw error; }
-    }
-    throw new AIError("EXHAUSTED", "All providers failed. " + lastError?.message, null, false, 500);
+const ProviderRouter = {
+  async route(request) {
+    const eligible = ProviderRegistry.listProviders().filter(p => p.enabled);
+    if (eligible.length === 0) throw new Error("No enabled providers.");
+    const config = eligible[0];
+    const adapter = config.providerType === 'Google' ? new GoogleGeminiProvider(config) : new MockAIProvider(config);
+    return await adapter.generate({ ...request, model: config.providerType === 'Google' ? 'gemini-1.5-flash' : 'Mock' });
   }
 }
 
 const AIService = {
-  async generateText(requestData) { return await ProviderRouter.route(AppModels.AIRequest(requestData)); },
-  async checkHealth(providerId) {
-    const config = ProviderRegistry.listProviders().find(p => p.id === providerId);
-    if (!config) throw new Error("Provider not found");
-    try {
-      const adapter = ProviderRouter._getAdapter(config);
-      const health = await adapter.healthCheck();
-      let uiStatus = health.status;
-      if (uiStatus === 'DEVELOPMENT_MOCK') uiStatus = 'Development Mock';
-      if (uiStatus === 'BACKEND_REQUIRED') uiStatus = 'Backend Required';
-      if (uiStatus === 'UNAUTHORIZED') uiStatus = 'Authentication Error';
-      ProviderRegistry.updateProvider(providerId, { status: uiStatus });
-      return health;
-    } catch (err) {
-      ProviderRegistry.updateProvider(providerId, { status: 'Error' });
-      return { status: 'ERROR', message: err.message };
-    }
+  async generateText(req) { return await ProviderRouter.route(req); },
+  async checkHealth(id) {
+    const config = ProviderRegistry.listProviders().find(p => p.id === id);
+    if (!config) return {status: 'ERROR'};
+    const adapter = config.providerType === 'Google' ? new GoogleGeminiProvider(config) : new MockAIProvider(config);
+    const health = await adapter.healthCheck();
+    ProviderRegistry.updateProvider(id, { status: health.status === 'DEVELOPMENT_MOCK' ? 'Development Mock' : health.status });
+    return health;
   }
 };
 
@@ -1087,15 +553,14 @@ const translations = {
 
 function useEphemeralState(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
-    if (typeof window === "undefined") return initialValue;
     try { const item = window.sessionStorage.getItem(key); return item ? JSON.parse(item) : initialValue; } catch (error) { return initialValue; }
   });
   const setValue = value => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
-      if (typeof window !== "undefined") window.sessionStorage.setItem(key, JSON.stringify(valueToStore));
-    } catch (error) { console.error(error); }
+      window.sessionStorage.setItem(key, JSON.stringify(valueToStore));
+    } catch (error) {}
   };
   return [storedValue, setValue];
 }
@@ -1246,12 +711,11 @@ const ProjectWorkspace = ({ project, updateProject, appSettings, t }) => {
     {id: 'Analyze', label: t('wfAnalyze'), status: project.projectBrief ? 'completed' : 'pending'},
     {id: 'Plan', label: t('wfPlan'), status: project.bookOutline ? 'completed' : (project.projectBrief ? 'running' : 'pending')},
     {id: 'Write', label: t('wfWrite'), status: Object.keys(project.chapterDrafts || {}).length > 0 ? 'running' : (project.bookOutline ? 'running' : 'pending')},
-    {id: 'Edit', label: t('wfEdit'), status: 'pending'}, 
     {id: 'Illustrate', label: t('wfIllustrate'), status: Object.keys(project.imageAssets || {}).length > 0 ? 'running' : 'pending'},
     {id: 'Layout', label: t('wfLayout'), status: Object.keys(project.chapterLayouts || {}).length > 0 ? 'running' : 'pending'},
     {id: 'QA', label: t('wfQA'), status: project.qaReport ? 'completed' : 'pending'},
     {id: 'Export', label: t('wfExport'), status: project.exportHistory?.length > 0 ? 'completed' : 'pending'},
-  ].filter(s => s.id !== 'Edit'); 
+  ];
 
   const runAnalysis = async (p = project) => {
     setIsProcessing(true); setProcessError(null);
@@ -1893,6 +1357,560 @@ const ProjectWorkspace = ({ project, updateProject, appSettings, t }) => {
 
         </div>
       </div>
+    </div>
+  );
+};
+
+const GenericLibraryPage = ({ title, description, actionText, actionIcon: ActionIcon, items, onActionClick, onCardClick, emptyStateText, t }) => (
+  <div className="p-8 max-w-6xl mx-auto space-y-6 animate-in fade-in duration-300">
+    <div className="flex justify-between items-center mb-8 border-b border-slate-200 dark:border-slate-800 pb-6">
+      <div><h1 className="text-3xl font-bold mb-2">{title}</h1><p className="text-slate-500">{description}</p></div>
+      {actionText && <Button icon={ActionIcon} onClick={onActionClick}>{actionText}</Button>}
+    </div>
+    {items.length === 0 ? (
+      <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed rounded-xl dark:border-slate-700 bg-slate-50 dark:bg-slate-900/20">
+         <p className="text-slate-500 mb-6">{emptyStateText || t('noItems')}</p>
+         {actionText && <Button icon={ActionIcon} onClick={onActionClick}>{actionText}</Button>}
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {items.map((item, i) => {
+          const ItemIcon = item.icon || ImageIcon;
+          return (
+          <Card key={i} className="flex flex-col h-full hover:border-blue-400 cursor-pointer group" onClick={() => onCardClick && onCardClick(item)}>
+             {item.imgPreview ? (
+               <div className="h-48 bg-slate-100 dark:bg-slate-800 rounded-lg mb-4 flex items-center justify-center border border-slate-200 dark:border-slate-700/50"><ItemIcon size={48} className="text-slate-300 dark:text-slate-600" /></div>
+             ) : (
+               <div className="h-40 bg-gradient-to-br from-slate-100 to-blue-50/50 dark:from-slate-800/80 rounded-lg mb-4 p-4 flex flex-col justify-between border border-slate-200 dark:border-slate-700/50"><span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-100/80 dark:bg-blue-900/50 px-2 py-1 rounded w-fit">{item.tag}</span></div>
+             )}
+            <h3 className="font-bold mb-2">{item.title}</h3>
+            <p className="text-sm text-slate-500 mb-4">{item.desc}</p>
+          </Card>
+        )})}
+      </div>
+    )}
+  </div>
+);
+
+const GlobalExportsPage = ({ projects }) => {
+    const allExports = projects.flatMap(p => (p.exportHistory||[]).map(e => ({...e, projectTitle: p.title}))).sort((a,b) => new Date(b.completedAt) - new Date(a.completedAt));
+    return (
+        <div className="p-8 max-w-6xl mx-auto">
+            <h1 className="text-3xl font-bold mb-6">Global Export History</h1>
+            {allExports.length === 0 ? <p className="text-slate-500">No exports found.</p> : (
+                <div className="bg-white dark:bg-slate-900 rounded-xl border dark:border-slate-800 overflow-hidden">
+                    <table className="w-full text-left text-sm">
+                        <thead className="bg-slate-50 dark:bg-slate-800 border-b dark:border-slate-700">
+                            <tr><th className="p-4">Date</th><th className="p-4">Project</th><th className="p-4">Format</th><th className="p-4">Status</th><th className="p-4 text-right">Action</th></tr>
+                        </thead>
+                        <tbody className="divide-y dark:divide-slate-800">
+                            {allExports.map(e => (
+                                <tr key={e.jobId}>
+                                    <td className="p-4">{new Date(e.completedAt).toLocaleString()}</td><td className="p-4 font-bold">{e.projectTitle}</td>
+                                    <td className="p-4">{e.format}</td><td className="p-4 text-green-600">{e.status}</td>
+                                    <td className="p-4 text-right">{e.downloadUrl !== 'print_trigger_only' && <a href={e.downloadUrl} download><Button size="sm" variant="outline">DL</Button></a>}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </div>
+    );
+};
+
+const SettingsPage = ({ appSettings, updateSettings, t }) => (
+    <div className="p-8 max-w-3xl mx-auto space-y-8 animate-in fade-in duration-300 pb-20">
+       <div className="mb-8 border-b border-slate-200 dark:border-slate-800 pb-6">
+         <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">{t('settings')}</h1>
+         <p className="text-slate-500 dark:text-slate-400">Configure your workspace preferences.</p>
+       </div>
+       <div className="space-y-6">
+         <Card className="shadow-sm">
+           <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Appearance & Language</h3>
+           <div className="flex items-center justify-between py-4 border-b border-slate-100 dark:border-slate-800/50">
+             <div><p className="font-medium text-slate-700 dark:text-slate-300">{t('uiLanguage')}</p></div>
+             <div className="flex gap-2 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+                 <button onClick={() => updateSettings({uiLang: 'th'})} className={`px-4 py-1.5 rounded-md text-sm font-medium ${appSettings.uiLang === 'th' ? 'bg-white shadow-sm text-blue-600 dark:bg-slate-700' : 'text-slate-600'}`}>ไทย</button>
+                 <button onClick={() => updateSettings({uiLang: 'en'})} className={`px-4 py-1.5 rounded-md text-sm font-medium ${appSettings.uiLang === 'en' ? 'bg-white shadow-sm text-blue-600 dark:bg-slate-700' : 'text-slate-600'}`}>English</button>
+             </div>
+           </div>
+           <div className="flex items-center justify-between py-4">
+             <div><p className="font-medium text-slate-700 dark:text-slate-300">{t('darkMode')}</p></div>
+             <button onClick={() => updateSettings({isDarkMode: !appSettings.isDarkMode})} className={`w-12 h-6 rounded-full relative transition-colors ${appSettings.isDarkMode ? 'bg-blue-500' : 'bg-slate-300 dark:bg-slate-600'}`}>
+               <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${appSettings.isDarkMode ? 'translate-x-6' : 'translate-x-0'}`} />
+             </button>
+           </div>
+         </Card>
+         <Card className="shadow-sm">
+           <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 border-b border-slate-100 dark:border-slate-800/50 pb-2">Developer Tools</h3>
+           <div className="flex items-center justify-between py-4">
+             <div><p className="font-medium text-slate-700 dark:text-slate-300">{t('advancedMode')}</p><p className="text-sm text-slate-500 mt-1">{t('advancedDesc')}</p></div>
+             <button onClick={() => updateSettings({advancedMode: !appSettings.advancedMode})} className={`w-12 h-6 rounded-full relative transition-colors ${appSettings.advancedMode ? 'bg-amber-500' : 'bg-slate-300 dark:bg-slate-600'}`}>
+               <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${appSettings.advancedMode ? 'translate-x-6' : 'translate-x-0'}`} />
+             </button>
+           </div>
+         </Card>
+       </div>
+    </div>
+);
+
+const AIProvidersPage = ({ t, appSettings }) => {
+    const [providers, setProviders] = useState([]);
+    const [isTesting, setIsTesting] = useState({});
+  
+    useEffect(() => { setProviders(ProviderRegistry.listProviders()); }, []);
+  
+    const handleAddProvider = async () => {
+      const typeChoice = prompt("Enter Provider Type (1 for Mock, 2 for Google Gemini):", "2");
+      if (!typeChoice) return;
+      const isGoogle = typeChoice === "2";
+      const apiKey = prompt(`Enter API key for ${isGoogle ? 'Google Gemini' : 'Mock Provider'} (Will only be stored in memory):`);
+      if (!apiKey) return;
+  
+      const newProvider = ProviderRegistry.registerProvider({
+        providerType: isGoogle ? 'Google' : 'Mock',
+        accountName: isGoogle ? 'Gemini API' : 'Test Account',
+        model: isGoogle ? 'Auto' : 'Auto',
+        priority: 'Primary',
+        enabled: true,
+        status: 'NOT_CONFIGURED',
+        capabilities: ['TEXT_GENERATION', 'STRUCTURED_OUTPUT']
+      });
+  
+      await CredentialStore.saveCredential(newProvider.id, apiKey);
+      setProviders(ProviderRegistry.listProviders());
+      handleTestAPI(newProvider.id);
+    };
+  
+    const handleTestAPI = async (providerId) => {
+      setIsTesting(prev => ({...prev, [providerId]: true}));
+      await AIService.checkHealth(providerId);
+      setProviders(ProviderRegistry.listProviders());
+      setIsTesting(prev => ({...prev, [providerId]: false}));
+    };
+  
+    return (
+      <div className="p-8 max-w-6xl mx-auto space-y-6 animate-in fade-in duration-300">
+        <div className="flex justify-between items-center mb-8 border-b border-slate-200 dark:border-slate-800 pb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">{t('aiProviders')}</h1>
+            <p className="text-slate-500 dark:text-slate-400">Configure connections to external AI models.</p>
+          </div>
+          {appSettings.advancedMode && ( <Button icon={PlusSquare} onClick={handleAddProvider}>{t('addProvider')}</Button> )}
+        </div>
+  
+        {!appSettings.advancedMode ? (
+          <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900/20 text-center">
+              <Cpu size={48} className="text-slate-300 dark:text-slate-600 mb-4" />
+              <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-2">AI Managed Automatically</h3>
+              <p className="text-slate-500 max-w-md">In Simple Mode, the system automatically selects the best AI providers to balance cost and quality for you.</p>
+          </div>
+        ) : providers.length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900/20 text-center">
+              <Key size={48} className="text-slate-300 dark:text-slate-600 mb-4" />
+              <p className="text-slate-500 mb-2 text-lg">No custom providers configured.</p>
+              <Button icon={PlusSquare} onClick={handleAddProvider}>{t('addProvider')}</Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {providers.map((p) => {
+               let statusColor = 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400';
+               let StatusIcon = null;
+               if (p.status === 'Connected') { statusColor = 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-400 border-green-200'; StatusIcon = Check; } 
+               else if (p.status === 'Development Mock' || p.status === 'Backend Required') { statusColor = 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-400 border-green-200'; StatusIcon = AlertCircle; } 
+               else if (p.status.includes('Error') || p.status === 'Rate Limited' || p.status === 'Timeout' || p.status === 'Unauthorized' || p.status === 'Authentication Error') { statusColor = 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-400 border-red-200'; StatusIcon = X; }
+  
+               return (
+              <Card key={p.id} className="flex flex-col group">
+                <div className="flex justify-between items-start mb-4">
+                   <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500"><Cpu size={16}/></div>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{p.providerType}</span>
+                   </div>
+                   <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded flex items-center gap-1 border border-transparent ${statusColor}`}>
+                      {StatusIcon && <StatusIcon size={12}/>}
+                      {p.status}
+                   </span>
+                </div>
+                <div className="space-y-2 mb-6">
+                  <p className="text-sm text-slate-600 dark:text-slate-400 font-medium">{p.accountName}</p>
+                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                    <span className="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">Priority: {p.priority}</span>
+                    <span className="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">Model: {p.model}</span>
+                  </div>
+                </div>
+                <div className="mt-auto grid grid-cols-2 gap-2">
+                  <Button variant="outline" className="w-full text-xs py-1.5" onClick={() => handleTestAPI(p.id)} disabled={isTesting[p.id]} icon={isTesting[p.id] ? RefreshCw : null}>
+                    {isTesting[p.id] ? 'Testing...' : t('testApi')}
+                  </Button>
+                  <Button variant="ghost" className="w-full text-xs py-1.5" disabled>Configure</Button>
+                </div>
+              </Card>
+            )})}
+          </div>
+        )}
+      </div>
+    );
+};
+
+const CharactersPage = ({ projects, updateProject, t }) => {
+    const [selectedProjectId, setSelectedProjectId] = useState(projects[0]?.id || '');
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [processError, setProcessError] = useState(null);
+  
+    const selectedProject = projects.find(p => p.id === selectedProjectId);
+  
+    const handleGenerate = async () => {
+      if (!selectedProject) return;
+      setIsProcessing(true); setProcessError(null);
+      try {
+        const newChars = await ImageEngine.generateCharacterBible(selectedProject);
+        const updatedChars = { ...(selectedProject.characters || {}), ...newChars };
+        updateProject({ ...selectedProject, characters: updatedChars });
+      } catch (error) { setProcessError(error.message); } finally { setIsProcessing(false); }
+    };
+  
+    const approveCharacter = (charId) => {
+      if (!selectedProject) return;
+      const updated = { ...selectedProject.characters };
+      if(updated[charId]) updated[charId].status = 'USER_APPROVED';
+      updateProject({ ...selectedProject, characters: updated });
+    };
+
+    const generateCharacterImage = async (charId) => {
+      if (!selectedProject) return;
+      setIsProcessing(true); setProcessError(null);
+      try {
+        const char = selectedProject.characters[charId];
+        const pseudoAsset = { assetId: char.characterId, visualPrompt: char.visualPrompt };
+        const updatedAsset = await ImageEngine.generateAssetImage(selectedProject, pseudoAsset);
+        
+        const updatedChars = { ...selectedProject.characters };
+        updatedChars[charId] = { ...char, imageUrl: updatedAsset.url };
+        updateProject({ ...selectedProject, characters: updatedChars });
+      } catch (error) {
+        setProcessError(error.message);
+      } finally {
+        setIsProcessing(false);
+      }
+    };
+  
+    return (
+      <div className="p-8 max-w-6xl mx-auto space-y-6 animate-in fade-in duration-300">
+        <div className="flex justify-between items-center mb-8 border-b border-slate-200 dark:border-slate-800 pb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">{t('characters')}</h1>
+            <p className="text-slate-500 dark:text-slate-400">Generate and manage your Character Bible.</p>
+          </div>
+          <div className="flex gap-4 items-center">
+              <select value={selectedProjectId} onChange={(e) => setSelectedProjectId(e.target.value)} className="px-4 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none shadow-sm">
+                <option value="" disabled>Select a Project...</option>
+                {projects.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
+              </select>
+              <Button icon={UserPlus} onClick={handleGenerate} disabled={!selectedProject || isProcessing} className={isProcessing ? 'animate-pulse' : ''}>
+                  {isProcessing ? 'Generating...' : t('addCharacter')}
+              </Button>
+          </div>
+        </div>
+        
+        {processError && (
+            <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg mb-6 dark:bg-red-900/20 dark:border-red-800 dark:text-red-400 flex items-start gap-3 shadow-sm">
+               <AlertCircle size={20} className="shrink-0 mt-0.5" />
+               <p className="text-sm font-medium">{processError}</p>
+            </div>
+         )}
+  
+        {!selectedProject ? (
+          <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900/20">
+             <p className="text-slate-500 mb-6 text-lg">Select a project to view its characters.</p>
+          </div>
+        ) : Object.keys(selectedProject.characters || {}).length === 0 ? (
+          <div className="flex flex-col items-center justify-center p-20 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-900/20">
+             <p className="text-slate-500 mb-6 text-lg">No characters generated yet for this project.</p>
+             <Button icon={PlayCircle} onClick={handleGenerate}>Generate Character Bible</Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Object.values(selectedProject.characters).map(char => (
+               <Card key={char.characterId} className="flex flex-col h-full group">
+                  <div className="flex justify-between items-start mb-4">
+                     <span className="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-100 dark:bg-purple-900/30 dark:text-purple-400 px-2 py-1 rounded">{char.role}</span>
+                     {char.status === 'USER_APPROVED' ? (
+                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"><CheckCircle2 size={12} className="inline mr-1"/>Approved</span>
+                     ) : (
+                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Needs Review</span>
+                     )}
+                  </div>
+
+                  {char.imageUrl && (
+                      <div className="w-full h-48 mb-4 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 dark:border-slate-700">
+                          <img src={char.imageUrl} alt={char.name} className="w-full h-full object-cover" loading="lazy" />
+                      </div>
+                  )}
+
+                  <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2">{char.name}</h3>
+                  <div className="space-y-3 mb-6 text-sm text-slate-600 dark:text-slate-400 flex-1">
+                     <div><span className="font-semibold text-slate-700 dark:text-slate-300">Appearance:</span> {char.physicalDescription}</div>
+                     <div><span className="font-semibold text-slate-700 dark:text-slate-300">Personality:</span> {char.personality}</div>
+                     <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded text-xs italic">
+                        <span className="font-bold not-italic block mb-1">Visual Prompt:</span>
+                        "{char.visualPrompt}"
+                     </div>
+                  </div>
+                  <div className="mt-auto grid grid-cols-2 gap-2">
+                     {char.status !== 'USER_APPROVED' ? (
+                         <Button variant="outline" className="w-full text-xs py-1.5" onClick={() => approveCharacter(char.characterId)}>Approve</Button>
+                     ) : (
+                         <div></div> 
+                     )}
+                     <Button 
+                        variant="ghost" 
+                        className="w-full text-xs py-1.5 text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400" 
+                        onClick={() => generateCharacterImage(char.characterId)}
+                        disabled={isProcessing}
+                     >
+                        {isProcessing ? 'Generating...' : (char.imageUrl ? 'Regenerate Image' : 'Generate Image')}
+                     </Button>
+                  </div>
+               </Card>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+};
+
+const Dashboard = ({ setCurrentView, projects, t }) => {
+    const formatDate = (dateString) => { try { const d = new Date(dateString); return isNaN(d.getTime()) ? 'Recently' : d.toLocaleDateString(); } catch(e) { return 'Recently'; } };
+    return (
+  <div className="p-8 max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-2">
+      <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100">{t('welcome')}</h1>
+      <p className="text-slate-500 dark:text-slate-400 text-lg">{t('createSomething')}</p>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <Card className="md:col-span-2 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10 border-blue-100 dark:border-blue-900/30 flex flex-col justify-center items-start p-8 shadow-sm">
+        <h2 className="text-2xl font-semibold mb-2 text-slate-800 dark:text-slate-100">{t('startJourney')}</h2>
+        <p className="text-slate-600 dark:text-slate-400 mb-6">{t('letAiHelp')}</p>
+        <Button onClick={() => setCurrentView('new')} icon={PlusSquare} className="px-6 py-3 text-lg shadow-sm">{t('newProject')}</Button>
+      </Card>
+      <Card className="flex flex-col gap-4">
+        <div className="flex justify-between items-center mb-2 border-b border-slate-100 dark:border-slate-800/50 pb-2">
+          <h3 className="font-semibold text-slate-700 dark:text-slate-200">{t('systemStatus')}</h3>
+          <Settings2 size={18} className="text-slate-400" />
+        </div>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center text-sm">
+            <span className="flex items-center gap-2 text-slate-600 dark:text-slate-400"><Cpu size={16}/> Text AI</span>
+            <span className="text-slate-500 dark:text-slate-500 flex items-center gap-1 font-medium bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Automatic</span>
+          </div>
+          <div className="flex justify-between items-center text-sm">
+            <span className="flex items-center gap-2 text-slate-600 dark:text-slate-400"><ImageIcon size={16}/> Image AI</span>
+            <span className="text-slate-500 dark:text-slate-500 flex items-center gap-1 font-medium bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">Automatic</span>
+          </div>
+           <div className="flex justify-between items-center text-sm">
+            <span className="flex items-center gap-2 text-slate-600 dark:text-slate-400"><GitMerge size={16}/> Workflow</span>
+            <span className="text-amber-600 dark:text-amber-400 flex items-center gap-1 font-medium bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded"><Clock size={14}/> Idle</span>
+          </div>
+        </div>
+      </Card>
+    </div>
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100">{t('recentProjects')}</h2>
+        <Button variant="ghost" onClick={() => setCurrentView('projects')}>{t('viewAll')}</Button>
+      </div>
+      {projects.length === 0 ? (
+         <div className="p-10 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-xl text-center">
+            <p className="text-slate-500 mb-4">{t('noItems')}</p>
+            <Button onClick={() => setCurrentView('new')} variant="outline">{t('newProject')}</Button>
+         </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {projects.slice(0,6).map(p => (
+            <Card key={p.id} className="hover:border-blue-300 dark:hover:border-blue-600 transition-colors cursor-pointer group" onClick={() => setCurrentView('workspace', {project: p})}>
+              <div className="flex flex-col h-full">
+                <div className="flex justify-between items-start mb-4">
+                   <div className="w-10 h-10 rounded bg-blue-50 dark:bg-slate-800 flex items-center justify-center text-blue-500 border border-blue-100 dark:border-slate-700">
+                     <BookOpen size={20}/>
+                   </div>
+                   <span className="text-[10px] text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">{formatDate(p.updatedAt)}</span>
+                </div>
+                <h3 className="font-medium text-lg text-slate-800 dark:text-slate-200 mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{p.title}</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-auto">{p.bookType} • {t('draft')}</p>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+)};
+
+const NewProject = ({ setCurrentView, handleCreateProject, initialType, t }) => {
+    const [title, setTitle] = useState('');
+    const [bookType, setBookType] = useState(initialType || 'Ebook');
+    const [style, setStyle] = useState('Modern');
+    const [language, setLanguage] = useState('ไทย');
+    const [quality, setQuality] = useState('Balanced');
+    const [error, setError] = useState('');
+  
+    const BOOK_TYPES = [{id: 'Ebook', label: 'Ebook'}, {id: 'หนังสือพิมพ์', label: 'หนังสือพิมพ์'}, {id: 'Magazine', label: 'นิตยสาร'}, {id: 'Workbook', label: 'แบบฝึกหัด'}, {id: 'Children Book', label: 'หนังสือเด็ก'}, {id: 'Novel', label: 'นิยาย'}, {id: 'Comic', label: 'การ์ตูน'}, {id: 'Catalog', label: 'แคตตาล็อก'}, {id: 'Custom', label: 'กำหนดเอง'}];
+    const STYLES = ['Minimal', 'Modern', 'Luxury', 'Editorial', 'Classic', 'Vintage', 'Fantasy', 'Children', 'Cinematic', 'Professional'];
+    const LANGUAGES = ['ไทย', 'English', '中文', '日本語', '한국어', 'Español', 'Français', 'Deutsch'];
+    const QUALITIES = [{ id: 'Economy', title: t('qEconomy'), desc: t('qEconomyDesc') }, { id: 'Balanced', title: t('qBalanced'), desc: t('qBalancedDesc') }, { id: 'High', title: t('qHigh'), desc: t('qHighDesc') }];
+  
+    const onSubmit = () => {
+      if (!title.trim()) { setError(t('titleRequired')); return; }
+      const newProjectData = AppModels.Project({ title, bookType, style, language, quality });
+      handleCreateProject(newProjectData);
+    };
+  
+    const BasicGrid = ({ items, current, setter }) => (
+      <div className="flex flex-wrap gap-3">
+        {items.map(item => {
+          const value = typeof item === 'object' ? item.id : item;
+          const label = typeof item === 'object' ? item.label : item;
+          return (
+            <button key={value} onClick={() => setter(value)}
+              className={`px-4 py-2 rounded-lg text-sm transition-all border ${current === value ? 'bg-blue-100 border-blue-400 text-blue-800 dark:bg-blue-900/40 dark:border-blue-500/80 dark:text-blue-200 font-medium shadow-sm ring-1 ring-blue-300 dark:ring-blue-500' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 dark:bg-slate-800/80 dark:border-slate-700/80 dark:text-slate-400 hover:border-slate-300'}`}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+    );
+  
+    return (
+      <div className="p-8 max-w-4xl mx-auto space-y-10 animate-in fade-in duration-300 pb-20">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <h1 className="text-4xl font-bold text-slate-800 dark:text-slate-100 mb-4">{t('createNewProject')}</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-lg leading-relaxed">{t('startWithTitle')}</p>
+        </div>
+        <div className="space-y-10 bg-slate-50 dark:bg-slate-900/30 p-8 rounded-2xl border border-slate-100 dark:border-slate-800/50 shadow-sm">
+          <div className="space-y-3">
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 tracking-wide">{t('bookTitle')}</label>
+            <input type="text" value={title} onChange={(e) => { setTitle(e.target.value); setError(''); }} placeholder={t('titlePlaceholder')}
+              className={`w-full text-2xl p-5 rounded-xl bg-white dark:bg-slate-800 border-2 shadow-sm ${error ? 'border-red-400 focus:ring-red-200' : 'border-slate-200 focus:border-blue-400 focus:ring-4 focus:ring-blue-100'} outline-none transition-all dark:text-slate-100`}
+            />
+            {error && <p className="text-red-500 text-sm flex items-center gap-1 mt-2 font-medium"><AlertCircle size={14}/>{error}</p>}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div className="space-y-4"><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 tracking-wide">{t('bookType')}</label><BasicGrid items={BOOK_TYPES} current={bookType} setter={setBookType} /></div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-end">
+                    <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 tracking-wide">{t('style')}</label>
+                    <button className="text-xs text-blue-600 dark:text-blue-400 hover:underline">{t('viewAllStyles')}</button>
+                </div>
+                <BasicGrid items={STYLES} current={style} setter={setStyle} />
+              </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 pt-6 border-t border-slate-200 dark:border-slate-800/80">
+            <div className="space-y-4"><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 tracking-wide">{t('bookLanguage')}</label><BasicGrid items={LANGUAGES} current={language} setter={setLanguage} /></div>
+            <div className="space-y-4">
+              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 tracking-wide">{t('quality')}</label>
+              <div className="flex flex-col gap-3">
+                {QUALITIES.map(q => (
+                  <button key={q.id} onClick={() => setQuality(q.id)} className={`flex flex-col text-left p-4 rounded-xl transition-all border ${quality === q.id ? 'bg-blue-50 border-blue-400 ring-1 ring-blue-300 dark:bg-blue-900/30' : 'bg-white border-slate-200 hover:bg-slate-50 dark:bg-slate-800/80'}`}>
+                    <span className={`font-semibold mb-1 ${quality === q.id ? 'text-blue-800 dark:text-blue-300' : 'text-slate-700'}`}>{q.title}</span>
+                    <span className={`text-xs ${quality === q.id ? 'text-blue-600/80' : 'text-slate-500'}`}>{q.desc}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="pt-10 flex justify-center">
+            <Button onClick={onSubmit} icon={PlayCircle} size="lg" className={`px-12 font-bold shadow-md ${!title.trim() ? 'opacity-70 grayscale' : 'bg-blue-500 hover:bg-blue-600 text-white border-none'}`}>
+              {t('createProjectBtn')}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+};
+
+export default function App() {
+  const [appSettings, setAppSettings] = useState(StorageService.getSettings());
+  const [projects, setProjects] = useState(StorageService.getProjects());
+  const [currentView, setCurrentView] = useEphemeralState('aipub_v3_view', 'dashboard');
+  const [activeProject, setActiveProject] = useEphemeralState('aipub_v3_active_project', null);
+  const [templatePrep, setTemplatePrep] = useEphemeralState('aipub_v3_template', null);
+
+  const t = useCallback((key) => translations[appSettings.uiLang]?.[key] || translations['en'][key] || key, [appSettings.uiLang]);
+
+  const updateSettings = (newSettings) => {
+    const updated = { ...appSettings, ...newSettings };
+    setAppSettings(updated);
+    StorageService.saveSettings(updated);
+  };
+
+  useEffect(() => {
+    if (appSettings.isDarkMode) {
+      document.documentElement.classList.add('dark');
+      document.body.classList.add('dark', 'bg-slate-950');
+      document.body.classList.remove('bg-white');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark', 'bg-slate-950');
+      document.body.classList.add('bg-white');
+    }
+  }, [appSettings.isDarkMode]);
+
+  const handleCreateProject = (projectModelData) => {
+    const savedProject = StorageService.saveProject(projectModelData);
+    setProjects(StorageService.getProjects());
+    setActiveProject(savedProject);
+    setTemplatePrep(null);
+    navigate('workspace');
+  };
+
+  const handleUpdateProject = (updatedData) => {
+    const savedProject = StorageService.saveProject(updatedData);
+    setProjects(StorageService.getProjects());
+    setActiveProject(savedProject);
+  }
+
+  const navigate = (view, params = {}) => {
+    if (params.project) setActiveProject(params.project);
+    if (params.templateTag) setTemplatePrep(params.templateTag);
+    setCurrentView(view);
+  };
+
+  const renderContent = () => {
+    switch(currentView) {
+      case 'dashboard': return <Dashboard setCurrentView={navigate} projects={projects} t={t} />;
+      case 'new': return <NewProject setCurrentView={navigate} handleCreateProject={handleCreateProject} initialType={templatePrep} t={t} />;
+      case 'workspace': return <ProjectWorkspace project={activeProject} updateProject={handleUpdateProject} appSettings={appSettings} t={t} />;
+      case 'settings': return <SettingsPage appSettings={appSettings} updateSettings={updateSettings} t={t} />;
+      case 'ai-providers': return <AIProvidersPage t={t} appSettings={appSettings} />;
+      case 'projects': return <GenericLibraryPage title={t('projects')} description="Manage your publications." actionText={t('newProject')} actionIcon={PlusSquare} onActionClick={() => navigate('new')} items={projects.map(p => ({title: p.title, desc: `${p.bookType} • ${p.status}`, tag: p.bookType, onClickData: p}))} onCardClick={(item) => navigate('workspace', {project: item.onClickData})} t={t} />;
+      case 'templates': return <GenericLibraryPage title={t('templates')} description="Start quickly with pre-designed structures." items={[{title: 'Ebook', tag: 'Ebook', desc: 'Clean layout.', imgPreview: true, icon: BookOpen}, {title: 'Magazine', tag: 'Magazine', desc: 'Editorial typography.', imgPreview: true, icon: LayoutTemplate}]} onCardClick={(item) => navigate('new', {templateTag: item.tag})} t={t} />;
+      case 'characters': return <CharactersPage projects={projects} updateProject={handleUpdateProject} t={t} />;
+      case 'images': return <GenericLibraryPage title={t('images')} description="Manage assets." actionText={t('addImage')} actionIcon={ImagePlus} items={[]} t={t} />;
+      case 'workflows': return <GenericLibraryPage title={t('workflows')} description="Automated sequences." items={[{title: 'Complete Book AI', tag: 'Full Auto', desc: 'From idea to formatted PDF.'}]} t={t} />;
+      case 'exports': return <GlobalExportsPage projects={projects} />;
+      default: return <Dashboard setCurrentView={navigate} projects={projects} t={t} />;
+    }
+  };
+
+  return (
+    <div className={`flex h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300 ${appSettings.isDarkMode ? 'dark' : ''}`}>
+      <Sidebar currentView={currentView} setCurrentView={navigate} t={t} />
+      <div className="flex-1 flex flex-col overflow-hidden relative">
+        <TopBar title={t('appTitle')} appSettings={appSettings} updateSettings={updateSettings} t={t} />
+        <main className="flex-1 overflow-y-auto bg-slate-50 dark:bg-[#0f111a] relative custom-scrollbar">
+          {renderContent()}
+        </main>
+      </div>
+      <style dangerouslySetInnerHTML={{__html: `
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(156, 163, 175, 0.3); border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background-color: rgba(71, 85, 105, 0.5); }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: rgba(156, 163, 175, 0.5); }
+      `}} />
     </div>
   );
 }
